@@ -1,4 +1,5 @@
-package sea;
+package org.example.sea;
+
 
 import java.io.Serializable;
 

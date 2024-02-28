@@ -1,5 +1,5 @@
 package com.BishalJustin.dao;
-import  sea.Ship;
+import org.example.sea.Ship;
 
 import java.util.List;
 

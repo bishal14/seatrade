@@ -1,4 +1,4 @@
-package sea;
+package org.example.sea;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class Harbour {
 	}
 
 	public String checkHarbourState() {
-		
+		return "";
 	}
 	
 }

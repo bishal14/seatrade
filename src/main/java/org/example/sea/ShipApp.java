@@ -1,4 +1,4 @@
-package sea;
+package org.example.sea;
 
 public class ShipApp extends Receiver{
 
@@ -19,7 +19,8 @@ public class ShipApp extends Receiver{
 	}
 	
 	public double sendEarnings() {
-		
+
+		return  0;
 	}
 	
 	public static void main(String[] args) {

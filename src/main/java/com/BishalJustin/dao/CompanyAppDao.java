@@ -1,7 +1,7 @@
 package com.BishalJustin.dao;
 
 import java.util.List;
-import sea.CompanyApp;
+import org.example.sea.CompanyApp;
 public interface CompanyAppDao {
     void addCompanyApp(CompanyApp companyApp );
     CompanyApp getCompanyAppById(int id);

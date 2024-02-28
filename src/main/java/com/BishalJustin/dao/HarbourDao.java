@@ -1,7 +1,7 @@
 package com.BishalJustin.dao;
 
 import java.util.List;
-import sea.Harbour;
+import org.example.sea.Harbour;
 public interface HarbourDao {
     void addHarbour(Harbour harbour);
     Harbour  getHarbourById(int id);

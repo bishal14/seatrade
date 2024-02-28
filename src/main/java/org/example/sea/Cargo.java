@@ -1,7 +1,5 @@
-package sea;
+package org.example.sea;
 
-import sea.Direction;
-import sea.Position;
 
 public class Cargo {
 

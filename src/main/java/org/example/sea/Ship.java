@@ -1,4 +1,4 @@
-package sea;
+package org.example.sea;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class Ship {
 	public void refreshPosition(Position position) {
 		
 	}
-	public void reportStateToCompany(Company company) {
+	public void reportStateToCompany(CompanyApp company) {
 		
 	}
 	

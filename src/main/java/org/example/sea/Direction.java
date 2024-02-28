@@ -1,4 +1,5 @@
-package sea;
+package org.example.sea;
+
 
 // Fahrtrichtung des Schiffs 
 

@@ -1,10 +1,13 @@
 package com.BishalJustin.dao;
 
 import java.util.List;
-import sea.Cargo;
+
+import org.example.sea.Cargo;
 
 public interface CargoDao {
+
     void addCargo(Cargo cargo);
+
     Cargo getCargoById(int id);
 
     List<Cargo> getAllCargos();

@@ -1,2 +1,3 @@
-package org.example.sea;public class Cell {
+package org.example.sea;
+public class Cell {
 }

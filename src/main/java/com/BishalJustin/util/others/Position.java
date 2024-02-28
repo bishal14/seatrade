@@ -1,4 +1,5 @@
-package org.example.sea;
+package com.BishalJustin.util.others;
+import org.example.sea.Direction;
 
 import java.io.Serializable;
 

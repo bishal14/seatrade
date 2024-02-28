@@ -4,45 +4,44 @@ package org.example.sea;
 public class Cargo {
 
 	private int id;
-	private String source;
-	private String destination;
-	private int value;
+	private Harbour sourceHarbour;
+	private Harbour destinationHarbour;
+	private double value;
 	
-	public Cargo(String source, String destination, int value) {
+	public Cargo(Harbour source, Harbour destinationHarbour, double value) {
 		super();
-		this.source = source;
-		this.destination = destination;
+		this.sourceHarbour = sourceHarbour;
+		this.destinationHarbour = destinationHarbour;
 		this.value = value;
-		this.id = (int)(Math.random()*1000)+1;
-	}
+ 	}
 	
-	public Cargo(int id, String source, String destination, int value) {
+	public Cargo(int id, Harbour source, Harbour destinationHarbour, double value) {
 		super();
-		this.source = source;
-		this.destination = destination;
+		this.sourceHarbour = source;
+		this.destinationHarbour = destinationHarbour;
 		this.value = value;
-		this.id = (int)(Math.random()*1000)+1;
+		this.id = id;
 	}
 	
 	public int getId() {
 		return id;
 	}
 
-	public String getSource() {
-		return source;
+	public Harbour getSourceHarbour() {
+		return sourceHarbour;
 	}
 
-	public String getDestination() {
-		return destination;
+	public Harbour getDestinationHarbour() {
+		return destinationHarbour;
 	}
 
-	public int getValue() {
+	public double getValue() {
 		return value;
 	}
 
 	@Override
 	public String toString() {
-		return "CARGO|" + id + "|"+source+"|"+ destination+ "|" +value;
+		return "CARGO|" + id + "|"+ sourceHarbour +"|"+ destinationHarbour + "|" +value;
 	}
 	
 	public static Cargo parse(String s){
@@ -51,7 +50,8 @@ public class Cargo {
 			if (token[0].equals("CARGO")){
 				int id = Integer.parseInt(token[1]);
 				int wert = Integer.parseInt(token[4]);
-				return new Cargo(id, token[2], token[3], wert);
+				return  null;
+						//new Cargo(id, token[2], token[3], wert);
 			}
 		}
 		return null;

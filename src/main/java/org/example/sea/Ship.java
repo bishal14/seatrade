@@ -44,5 +44,5 @@ public class Ship {
 		}
 		return false;
 }
-	//hibernate
+	//jpa comment
 }

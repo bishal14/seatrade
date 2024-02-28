@@ -2,6 +2,8 @@ package com.seatrade.dao;
 
 import com.seatrade.dao.GenericDAO;
 import com.seatrade.entity.Cargo;
+import com.seatrade.entity.Company;
+import com.seatrade.entity.CompanyApp;
 import com.seatrade.entity.Harbour;
 import com.seatrade.util.database.DatabaseUtility;
 
@@ -12,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CargoDaoImplementation implements GenericDAO<Cargo> {
-    private static final String INSERT_CARGOS= "INSERT INTO cargo(cargo_id,harbour_source_id, harbour_destination_id, value)  (name, weight) VALUES    (?,?,?, ?);";
+    private static final String INSERT_CARGOS= "INSERT INTO cargo(cargo_id,harbour_source_id, harbour_destination_id, value)    VALUES    (?,?,?, ?);";
 
-     private static final String SELECT_CARGO_BY_ID="select * from cargo where id ='";
+     private static final String SELECT_CARGO_BY_ID="select * from cargo where cargo_id ='";
     private static final String SELECT_ALL_CARGOS="select * from cargo";
-    private static final String DELETE_CARGOS="delete from cargo where id='";
+    private static final String DELETE_CARGOS="delete from cargo where cargo_id='";
     private static final String UPDATE_CARGO="update cargo set cargo_id=',harbour_source_id=', harbour_destination_id=', value=' where id ='";
     @Override
     public Cargo create(Cargo cargo) {
@@ -54,6 +56,7 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
 
     }
 
+
     @Override
     public Cargo get(Object id) {
          Cargo cargo = null;
@@ -80,9 +83,10 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
 
     @Override
     public void delete(Object cargoId) {
+        String idString = DELETE_CARGOS.concat(cargoId.toString());
 
         try {
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(DELETE_CARGOS);
+            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(idString);
             preparedStatement.setInt(1,Integer.parseInt(cargoId.toString()));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

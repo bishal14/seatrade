@@ -1,3 +1,3 @@
-package org.example.sea;
+package com.seatrade;
 public class Cell {
 }

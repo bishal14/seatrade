@@ -1,4 +1,4 @@
-package org.example.sea;
+package com.seatrade;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.BishalJustin.util;
+package com.seatrade.util.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

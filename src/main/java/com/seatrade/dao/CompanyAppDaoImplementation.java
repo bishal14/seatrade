@@ -1,8 +1,7 @@
-package com.seatrade.dao.daoimplement;
+package com.seatrade.dao;
 
 import com.seatrade.dao.GenericDAO;
 import com.seatrade.entity.CompanyApp;
-import com.seatrade.dao.CompanyAppDao;
 
 import java.util.List;
 

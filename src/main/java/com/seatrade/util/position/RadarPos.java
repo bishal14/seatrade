@@ -1,4 +1,4 @@
-package com.BishalJustin.util.others;
+package com.seatrade.util.position;
 
 // Richtung umgebender Felder 
 

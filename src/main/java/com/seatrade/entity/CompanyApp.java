@@ -1,4 +1,7 @@
-package org.example.sea;
+package com.seatrade.entity;
+
+import com.seatrade.Receiver;
+import com.seatrade.ShipApp;
 
 import java.io.BufferedReader;
 import java.io.IOException;

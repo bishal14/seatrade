@@ -1,7 +1,7 @@
-package org.example.sea;
+package com.seatrade.entity;
 
-import com.BishalJustin.util.others.Position;
-import com.BishalJustin.util.others.RadarScreen;
+import com.seatrade.util.position.Position;
+import com.seatrade.util.position.RadarScreen;
 
 import java.util.List;
 

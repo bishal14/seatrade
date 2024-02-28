@@ -1,6 +1,6 @@
-package com.BishalJustin.util.others;
+package com.seatrade.util.position;
 
-import org.example.sea.Ground;
+import com.seatrade.Ground;
 
 public class RadarField {
 	private Ground ground;

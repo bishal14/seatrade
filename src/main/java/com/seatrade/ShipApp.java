@@ -1,4 +1,7 @@
-package org.example.sea;
+package com.seatrade;
+
+import com.seatrade.entity.CompanyApp;
+import com.seatrade.entity.Ship;
 
 public class ShipApp extends Receiver{
 

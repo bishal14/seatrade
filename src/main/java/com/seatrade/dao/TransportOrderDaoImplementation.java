@@ -7,6 +7,7 @@ import java.util.List;
 
 public class TransportOrderDaoImplementation implements GenericDAO<TransportOrder> {
 
+
     @Override
     public TransportOrder create(TransportOrder transportOrder) {
         return null;
@@ -18,12 +19,12 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
     }
 
     @Override
-    public TransportOrder get(TransportOrder transportOrder) {
+    public TransportOrder get(Object id) {
         return null;
     }
 
     @Override
-    public void delete(TransportOrder transportOrder) {
+    public void delete(Object id) {
 
     }
 

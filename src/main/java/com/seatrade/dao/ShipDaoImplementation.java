@@ -19,12 +19,12 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
     }
 
     @Override
-    public Ship get(Ship ship) {
+    public Ship get(Object id) {
         return null;
     }
 
     @Override
-    public void delete(Ship ship) {
+    public void delete(Object id) {
 
     }
 

@@ -4,36 +4,33 @@ package com.seatrade.entity;
 public class Cargo {
 
 	private int id;
-	private Harbour sourceHarbour;
-	private Harbour destinationHarbour;
+	private int sourceHarbourId;
+	private int  destinationHarbourId;
 	private double value;
 
-	
-	public Cargo(Harbour source, Harbour destinationHarbour, double value) {
-		super();
-		this.sourceHarbour = sourceHarbour;
-		this.destinationHarbour = destinationHarbour;
+	public Cargo(int sourceHarbourId, int destinationHarbourId, double value) {
+		this.sourceHarbourId = sourceHarbourId;
+		this.destinationHarbourId = destinationHarbourId;
 		this.value = value;
- 	}
-	
-	public Cargo(int id, Harbour source, Harbour destinationHarbour, double value) {
-		super();
-		this.sourceHarbour = source;
-		this.destinationHarbour = destinationHarbour;
-		this.value = value;
-		this.id = id;
 	}
-	
+
+	public Cargo(int id, int sourceHarbourId, int destinationHarbourId, double value) {
+		this.id = id;
+		this.sourceHarbourId = sourceHarbourId;
+		this.destinationHarbourId = destinationHarbourId;
+		this.value = value;
+	}
+
 	public int getId() {
 		return id;
 	}
 
-	public Harbour getSourceHarbour() {
-		return sourceHarbour;
+	public int getSourceHarbourId() {
+		return sourceHarbourId;
 	}
 
-	public Harbour getDestinationHarbour() {
-		return destinationHarbour;
+	public int getDestinationHarbourId() {
+		return destinationHarbourId;
 	}
 
 	public double getValue() {
@@ -42,7 +39,7 @@ public class Cargo {
 
 	@Override
 	public String toString() {
-		return "CARGO|" + id + "|"+ sourceHarbour +"|"+ destinationHarbour + "|" +value;
+		return "CARGO|" + id + "|"+ sourceHarbourId +"|"+ destinationHarbourId + "|" +value;
 	}
 	
 	public static Cargo parse(String s){

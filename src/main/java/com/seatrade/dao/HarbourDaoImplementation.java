@@ -7,6 +7,7 @@ import java.util.List;
 
 public class HarbourDaoImplementation implements GenericDAO<Harbour> {
 
+
     @Override
     public Harbour create(Harbour harbour) {
         return null;
@@ -18,12 +19,12 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
     }
 
     @Override
-    public Harbour get(Harbour harbour) {
+    public Harbour get(Object id) {
         return null;
     }
 
     @Override
-    public void delete(Harbour harbour) {
+    public void delete(Object id) {
 
     }
 

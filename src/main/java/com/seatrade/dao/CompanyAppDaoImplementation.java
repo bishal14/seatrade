@@ -7,6 +7,7 @@ import java.util.List;
 
 public class CompanyAppDaoImplementation implements GenericDAO<CompanyApp> {
 
+
     @Override
     public CompanyApp create(CompanyApp companyApp) {
         return null;
@@ -18,12 +19,12 @@ public class CompanyAppDaoImplementation implements GenericDAO<CompanyApp> {
     }
 
     @Override
-    public CompanyApp get(CompanyApp companyApp) {
+    public CompanyApp get(Object id) {
         return null;
     }
 
     @Override
-    public void delete(CompanyApp companyApp) {
+    public void delete(Object id) {
 
     }
 

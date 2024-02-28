@@ -25,5 +25,24 @@ public class Harbour {
 	public String checkHarbourState() {
 		return "2";
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public List<Cargo> getCargos() {
+		return cargos;
+	}
+
+	public List<Ship> getShipsInHarbour() {
+		return shipsInHarbour;
+	}
 }

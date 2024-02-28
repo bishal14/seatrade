@@ -6,29 +6,27 @@ import java.sql.SQLException;
 
 public class DatabaseUtility {
 
+    private static Connection connection;
+
     private static final String URL = "jdbc:mysql://localhost:3306/seatrade";
     private static final String USER = "justin";
     private static final String PASSWORD = "bishal";
 
-    // Static block to load the JDBC driver
-    static {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+    public DatabaseUtility() {
+        try{
+            this.connection=DriverManager.getConnection(URL);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    // Method to get a database connection
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
+
 
     // Method to close a database connection
-    public static void closeConnection(Connection connection) {
-        if (connection != null) {
+    public static void closeConnection() {
+        if ( connection != null) {
             try {
-                connection.close();
+                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

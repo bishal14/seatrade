@@ -7,6 +7,7 @@ public class Cargo {
 	private Harbour sourceHarbour;
 	private Harbour destinationHarbour;
 	private double value;
+
 	
 	public Cargo(Harbour source, Harbour destinationHarbour, double value) {
 		super();

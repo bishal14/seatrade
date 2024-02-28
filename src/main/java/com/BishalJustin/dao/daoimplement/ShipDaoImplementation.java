@@ -1,2 +1,4 @@
-package com.BishalJustin.dao.daoimplement;public class ShipDaoImplementation {
+package com.BishalJustin.dao.daoimplement;
+
+public class ShipDaoImplementation {
 }

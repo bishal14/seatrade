@@ -1,2 +1,4 @@
-package com.BishalJustin.dao.daoimplement;public class ShipParkingAssociationDaoImplementation {
+package com.BishalJustin.dao.daoimplement;
+
+public class ShipParkingAssociationDaoImplementation {
 }

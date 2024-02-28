@@ -1,4 +1,4 @@
-package dao;
+package com.BishalJustin.dao;
 
-public class ShipParkingAssociationDao {
+public interface ShipParkingAssociationDao {
 }

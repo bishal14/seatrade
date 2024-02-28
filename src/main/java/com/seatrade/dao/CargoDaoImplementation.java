@@ -28,12 +28,12 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
             preparedStatement.setInt(2,cargo.getDestinationHarbourId());
             preparedStatement.setDouble(4,cargo.getValue());
             preparedStatement.executeUpdate();
-
+            return cargo;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return cargo;
+
 
     }
 
@@ -56,8 +56,7 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
 
     @Override
     public Cargo get(Object id) {
-         HarbourDaoImplementation harbourDaoImplementation = new HarbourDaoImplementation();
-        Cargo cargo = null;
+         Cargo cargo = null;
 
         String idString = SELECT_CARGO_BY_ID.concat(id.toString());
 
@@ -71,10 +70,11 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
                double value = resultSet.getDouble(4);
                cargo = new Cargo(sourceHarbourId,destinationHarbourId,value);
              }
+            return cargo;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return cargo;
     }
 
 
@@ -105,11 +105,13 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
                 int sourceHarbourId= rs.getInt(2);
                 int destinationHarbourId=rs.getInt(3);
                 double value = rs.getDouble(4);
+                Cargo cargo = new Cargo(id,sourceHarbourId,destinationHarbourId,value);
+                cargos.add(cargo);
 
             }
+            return cargos;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
     }
 }

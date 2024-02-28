@@ -1,21 +1,34 @@
 package com.seatrade.entity;
 
+import com.seatrade.Cell;
+
 import java.util.List;
 
 public class Harbour {
 
-	int id;
-	String name;
-	String position;
+	private int harbourId;
+	private String name;
+
+	private  int cellId;
+
+
 	List<Cargo> cargos;
 	List<Ship> shipsInHarbour;
-	
-	
-	public Harbour(int id, String name, String position) {
-		super();
-		this.id = id;
+
+	public Harbour(String name, int cellId) {
 		this.name = name;
-		this.position = position;
+		this.cellId = cellId;
+	}
+
+	public Harbour(String name) {
+		this.name = name;
+	}
+
+	public Harbour(int id, String name, int cellId) {
+		super();
+		this.harbourId = id;
+		this.name = name;
+		this.cellId = cellId;
 	}
 	
 	public void showHarbourDetails() {
@@ -27,15 +40,16 @@ public class Harbour {
 	}
 
 	public int getId() {
-		return id;
+		return harbourId;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getPosition() {
-		return position;
+
+	public int getCellId() {
+		return cellId;
 	}
 
 	public List<Cargo> getCargos() {

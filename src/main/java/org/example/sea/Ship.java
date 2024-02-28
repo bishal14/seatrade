@@ -41,5 +41,5 @@ public class Ship {
 		}
 		return false;
 }
-	
+	//jpa comment
 }

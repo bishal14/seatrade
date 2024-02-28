@@ -2,6 +2,7 @@ package com.seatrade.entity;
 
 import com.seatrade.util.position.Position;
 import com.seatrade.util.position.RadarScreen;
+import com.seatrade.entity.Ship;
 
 import java.util.List;
 

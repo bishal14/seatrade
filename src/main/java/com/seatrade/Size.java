@@ -1,8 +1,4 @@
 package com.seatrade;
-<<<<<<< HEAD:src/main/java/com/seatrade/Size.java
-=======
-
->>>>>>> c8e6b9cc36783f16613c9565324c84cf65e1e1e3:src/main/java/com/seatrade/Size.java
 
 import java.io.Serializable;
 

@@ -23,7 +23,7 @@ public class Harbour {
 	}
 
 	public String checkHarbourState() {
-		
+		return "2";
 	}
 	
 }

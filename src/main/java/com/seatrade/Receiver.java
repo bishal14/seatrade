@@ -6,9 +6,9 @@ import java.net.Socket;
 
 public class Receiver extends Thread{
 
-	Socket socket;
-	BufferedReader in;
-	PrintWriter out;
+	public Socket socket;
+	public BufferedReader in;
+	public PrintWriter out;
 	
 	@Override
 	public void run() {

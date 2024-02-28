@@ -28,7 +28,10 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
 
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c8e6b9cc36783f16613c9565324c84cf65e1e1e3
     @Override
     public List<Cargo> listAll() {
         return null;

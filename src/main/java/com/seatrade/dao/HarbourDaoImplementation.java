@@ -88,7 +88,7 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
 
         List<Harbour> harbours = new ArrayList<>();
         try{
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(DELETE_HARBOUR);
+            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_HARBOUR);
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()){

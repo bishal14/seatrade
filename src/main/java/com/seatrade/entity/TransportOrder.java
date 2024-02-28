@@ -1,4 +1,4 @@
-package org.example.sea;
+package com.seatrade.entity;
 
 public class TransportOrder {
     private int toi;

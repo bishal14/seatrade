@@ -1,7 +1,6 @@
-package com.seatrade.dao.daoimplement;
+package com.seatrade.dao;
 
 import com.seatrade.dao.GenericDAO;
-import com.seatrade.dao.TransportOrderDao;
 import com.seatrade.entity.TransportOrder;
 
 import java.util.List;

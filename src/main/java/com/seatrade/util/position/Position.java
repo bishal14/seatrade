@@ -1,6 +1,5 @@
-package com.BishalJustin.util.others;
-
-import org.example.sea.Direction;
+package com.seatrade.util.position;
+import com.seatrade.Direction;
 
 import java.io.Serializable;
 

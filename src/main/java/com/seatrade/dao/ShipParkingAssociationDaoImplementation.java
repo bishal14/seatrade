@@ -1,4 +1,4 @@
-package com.seatrade.dao.daoimplement;
+package com.seatrade.dao;
 
 public class ShipParkingAssociationDaoImplementation {
 }

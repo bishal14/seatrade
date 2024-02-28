@@ -1,4 +1,4 @@
-package org.example.sea;
+package com.seatrade.entity;
 
 import java.util.List;
 

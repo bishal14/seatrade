@@ -1,6 +1,5 @@
-package com.seatrade.dao.daoimplement;
+package com.seatrade.dao;
 
-import com.seatrade.dao.CargoDao;
 import com.seatrade.dao.GenericDAO;
 import com.seatrade.entity.Cargo;
 

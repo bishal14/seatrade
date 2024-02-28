@@ -1,4 +1,6 @@
-package org.example.sea;
+package com.BishalJustin.util.others;
+
+import org.example.sea.Ground;
 
 import java.io.Serializable;
 

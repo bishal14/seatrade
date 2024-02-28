@@ -1,6 +1,5 @@
 package org.example.sea;
 
-
 // Fahrtrichtung des Schiffs 
 
 //Alle enums bieten automatisch folgenden Methoden:

@@ -1,4 +1,4 @@
-package sea;
+package org.example.sea;
 
 import javax.swing.*;
 import java.awt.*;

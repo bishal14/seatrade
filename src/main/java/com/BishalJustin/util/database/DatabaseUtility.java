@@ -1,4 +1,4 @@
-package com.BishalJustin.util;
+package com.BishalJustin.util.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

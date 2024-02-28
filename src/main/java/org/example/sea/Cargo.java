@@ -45,6 +45,7 @@ public class Cargo {
 	}
 	
 	public static Cargo parse(String s){
+		// TODO- this method has to be edited once again!
 		String[] token = s.trim().split("\\|");
 		if(token.length == 5){
 			if (token[0].equals("CARGO")){

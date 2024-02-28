@@ -1,6 +1,5 @@
 package org.example.sea;
 
-
 import java.io.Serializable;
 
 // Planetengroesse

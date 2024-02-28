@@ -1,6 +1,5 @@
 package org.example.sea;
 
-
 import java.net.ServerSocket;
 
 public class RequestListener extends Thread{

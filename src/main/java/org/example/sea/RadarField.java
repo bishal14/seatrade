@@ -1,8 +1,4 @@
-package com.BishalJustin.util.others;
-
-import org.example.sea.Ground;
-
-import org.example.sea.Ground;
+package org.example.sea;
 
 public class RadarField {
 	private Ground ground;

@@ -1,5 +1,4 @@
-package com.BishalJustin.util.others;
-
+package org.example.sea;
 
 // Richtung umgebender Felder 
 

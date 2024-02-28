@@ -1,7 +1,4 @@
-package com.BishalJustin.util.others;
-
-import org.example.sea.Direction;
-
+package org.example.sea;
 import java.io.Serializable;
 
 // Positionsdaten

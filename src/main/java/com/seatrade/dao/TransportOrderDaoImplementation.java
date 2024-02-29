@@ -16,14 +16,13 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
     private static final String SELECT_TRANSPORT_ORDE_BY_ID="select fk_company_id,fk_ship_id  where transporter_id='";
     private static final String SELECT_ALL_TRANSPORT_ORDER  ="select * from transportorder";
     private static final String DELETE_TRANSPORT_ORDER ="delete from transportorder where transporter_id='";
-    private static final String UPDATE_TRANSPORT_ORDE="update transportorder set transporter_id=',k_company_id=', fk_ship_id='";
+    private static final String UPDATE_TRANSPORT_ORDE="update transportorder set transporter_id=',fk_company_id=', fk_ship_id='";
 
     @Override
     public TransportOrder add(TransportOrder transportOrder) {
         try {
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_TRANSPORT_ORDER);
-            preparedStatement.setInt(1, transportOrder.getTransportOrderId());
-            preparedStatement.setInt(2, transportOrder.getForeignKeyCompanyId());
+             preparedStatement.setInt(2, transportOrder.getForeignKeyCompanyId());
             preparedStatement.setInt(3, transportOrder.getForeignKeyShipId());
 
             preparedStatement.executeUpdate();
@@ -37,6 +36,7 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
     public TransportOrder update(TransportOrder transportOrder) {
         try{
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_TRANSPORT_ORDE);
+            preparedStatement.setInt(1, transportOrder.getTransportOrderId());
             preparedStatement.setInt(2, transportOrder.getForeignKeyCompanyId());
             preparedStatement.setInt(3, transportOrder.getForeignKeyShipId());
             preparedStatement.executeUpdate();
@@ -59,10 +59,11 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
+                int transporterId=resultSet.getInt(1);
                 int companyId= resultSet.getInt(2);
                 int shipId = resultSet.getInt(3);
 
-                transportOrder = new TransportOrder(companyId,shipId);
+                transportOrder = new TransportOrder(transporterId,companyId,shipId);
             }
             return transportOrder;
 

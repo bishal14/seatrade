@@ -17,7 +17,7 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
     private static final String SELECT_COMPANY_ID="select * from company where company_id='";
     private static final String SELECT_ALL_COMPANY="select * from company";
     private static final String DELETE_COMPANY="delete from company where company_id='";
-    private static final String UPDATE_COMPANY="updat company set company_id=', name='";
+    private static final String UPDATE_COMPANY="update company set company_id=', name='";
     @Override
     public Company create(Company company) {
 

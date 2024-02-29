@@ -1,13 +1,33 @@
 package com.seatrade.entity;
 
 public class TransportOrder {
-    private int toi;
+    private int transportOrderId;
+    private int foreignKeyCompanyId;
 
-    public TransportOrder(int toi) {
-        this.toi = toi;
+    private int foreignKeyShipId;
+
+
+    public TransportOrder(int transportOrderId, int foreignKeyCompanyId, int foreignKeyShipId) {
+        this.transportOrderId = transportOrderId;
+        this.foreignKeyCompanyId = foreignKeyCompanyId;
+        this.foreignKeyShipId = foreignKeyShipId;
     }
 
-    public int getToi() {
-        return toi;
+
+    public TransportOrder(int foreignKeyCompanyId, int foreignKeyShipId) {
+        this.foreignKeyCompanyId = foreignKeyCompanyId;
+        this.foreignKeyShipId = foreignKeyShipId;
+    }
+
+    public int getTransportOrderId() {
+        return transportOrderId;
+    }
+
+    public int getForeignKeyCompanyId() {
+        return foreignKeyCompanyId;
+    }
+
+    public int getForeignKeyShipId() {
+        return foreignKeyShipId;
     }
 }

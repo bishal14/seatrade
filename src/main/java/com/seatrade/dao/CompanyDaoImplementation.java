@@ -17,15 +17,14 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
     private static final String SELECT_COMPANY_ID="select * from company where company_id='";
     private static final String SELECT_ALL_COMPANY="select * from company";
     private static final String DELETE_COMPANY="delete from company where company_id='";
-    private static final String UPDATE_COMPANY="update company set company_id=', name=', company_balance='";
+    private static final String UPDATE_COMPANY="update company set  name=', company_id=',company_balance='";
     @Override
     public Company add(Company company) {
 
         try{
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_COMPANY);
             preparedStatement.setString(1,company.getName());
-            preparedStatement.setInt(2,company.getCompanyId());
-            preparedStatement.setDouble(3,company.getCompanyBalance());
+             preparedStatement.setDouble(3,company.getCompanyBalance());
 
             preparedStatement.executeUpdate();
             return  company;
@@ -63,7 +62,8 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
             while (resultSet.next()){
                 String companyName=resultSet.getString(1);
                 int companyId=resultSet.getInt(2);
-                company = new Company(companyName,companyId);
+                double balance = resultSet.getDouble(3);
+                company = new Company(companyName,companyId,balance);
 
             }
             return company;
@@ -104,7 +104,8 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
         while (rs.next()){
             String name=rs.getString(1);
             int id = rs.getInt(2);
-            Company company = new Company(name,id);
+            double balance = rs.getDouble(3);
+            Company company = new Company(name,id,balance);
 
             companies.add(company);
 

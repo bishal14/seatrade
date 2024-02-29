@@ -8,17 +8,26 @@ public class Cargo {
 	private int  destinationHarbourId;
 	private double value;
 
-	public Cargo(int sourceHarbourId, int destinationHarbourId, double value) {
-		this.sourceHarbourId = sourceHarbourId;
-		this.destinationHarbourId = destinationHarbourId;
-		this.value = value;
-	}
+	private int fkTransportId;
+	private int fkShipId;
 
-	public Cargo(int id, int sourceHarbourId, int destinationHarbourId, double value) {
+
+
+	public Cargo(int id, int sourceHarbourId, int destinationHarbourId, double value, int fkTransportId, int fkShipId) {
 		this.id = id;
 		this.sourceHarbourId = sourceHarbourId;
 		this.destinationHarbourId = destinationHarbourId;
 		this.value = value;
+		this.fkTransportId = fkTransportId;
+		this.fkShipId = fkShipId;
+	}
+
+	public Cargo(int sourceHarbourId, int destinationHarbourId, double value, int fkTransportId, int fkShipId) {
+		this.sourceHarbourId = sourceHarbourId;
+		this.destinationHarbourId = destinationHarbourId;
+		this.value = value;
+		this.fkTransportId = fkTransportId;
+		this.fkShipId = fkShipId;
 	}
 
 	public int getId() {
@@ -35,6 +44,15 @@ public class Cargo {
 
 	public double getValue() {
 		return value;
+	}
+
+
+	public int getFkTransportId() {
+		return fkTransportId;
+	}
+
+	public int getFkShipId() {
+		return fkShipId;
 	}
 
 	@Override

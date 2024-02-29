@@ -12,7 +12,7 @@ import java.util.List;
 
 public class HarbourDaoImplementation implements GenericDAO<Harbour> {
 
-    private static final String INSERT_HARBOUR="INSERT INTO harbour(harbour_id,name,cellId) values (?,?,?)";
+    private static final String INSERT_HARBOUR="INSERT INTO harbour(harbour_id,name,cell_Id) values (?,?,?)";
     private static final String SELECT_HARBOUR_BY_ID="select harbour_id,name,cell_id where id='";
     private static final String SELECT_ALL_HARBOUR  ="select * from harbour";
     private static final String DELETE_HARBOUR ="delete from harbour where id='";

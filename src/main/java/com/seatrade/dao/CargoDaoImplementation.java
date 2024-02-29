@@ -14,21 +14,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CargoDaoImplementation implements GenericDAO<Cargo> {
-    private static final String INSERT_CARGOS= "INSERT INTO cargo(cargo_id,harbour_source_id, harbour_destination_id, value)    VALUES    (?,?,?, ?);";
+    private static final String INSERT_CARGOS= "INSERT INTO cargo(cargo_id,fk_harbour_source_id, fk_harbour_destination_id, value,fk_transport_order_id,fk_ship_id)    VALUES    (?,?,?, ?,?,?);";
 
      private static final String SELECT_CARGO_BY_ID="select * from cargo where cargo_id ='";
     private static final String SELECT_ALL_CARGOS="select * from cargo";
     private static final String DELETE_CARGOS="delete from cargo where cargo_id='";
-    private static final String UPDATE_CARGO="update cargo set cargo_id=',harbour_source_id=', harbour_destination_id=', value=' where id ='";
+    private static final String UPDATE_CARGO="update cargo set cargo_id=',harbour_source_id=', harbour_destination_id=', value=' where id =',fk_transport_order_id=', fk_ship_id='";
     @Override
     public Cargo create(Cargo cargo) {
 
         try{
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_CARGOS);
-            preparedStatement.setInt(1,cargo.getId());
-            preparedStatement.setInt(2,cargo.getSourceHarbourId());
-            preparedStatement.setInt(2,cargo.getDestinationHarbourId());
+             preparedStatement.setInt(2,cargo.getId());
+            preparedStatement.setInt(3,cargo.getSourceHarbourId());
             preparedStatement.setDouble(4,cargo.getValue());
+            preparedStatement.setInt(5,cargo.getSourceHarbourId());
+            preparedStatement.setInt(6,cargo.getDestinationHarbourId());
             preparedStatement.executeUpdate();
             return cargo;
         } catch (SQLException e) {
@@ -43,10 +44,12 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
     public Cargo update(Cargo cargo) {
     try{
         PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_CARGO);
-        preparedStatement.setInt(2,cargo.getSourceHarbourId());
-        preparedStatement.setInt(3,cargo.getDestinationHarbourId());
+        preparedStatement.setInt(1,cargo.getId());
+        preparedStatement.setInt(2,cargo.getId());
+        preparedStatement.setInt(3,cargo.getSourceHarbourId());
         preparedStatement.setDouble(4,cargo.getValue());
-
+        preparedStatement.setInt(5,cargo.getSourceHarbourId());
+        preparedStatement.setInt(6,cargo.getDestinationHarbourId());
         preparedStatement.executeUpdate();
         return cargo;
     }catch (SQLException e) {
@@ -65,13 +68,16 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
 
         try{
             PreparedStatement preparedStatement= DatabaseUtility.getConnection().prepareStatement(idString);
+            preparedStatement.setInt(1,Integer.parseInt(id.toString()));
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
                int sourceHarbourId= resultSet.getInt(2);
                int destinationHarbourId = resultSet.getInt(3);
                double value = resultSet.getDouble(4);
-               cargo = new Cargo(sourceHarbourId,destinationHarbourId,value);
+               int fkTransportOrderId= resultSet.getInt(5);
+               int fkShipId= resultSet.getInt(6);
+               cargo = new Cargo(Integer.parseInt(id.toString()), sourceHarbourId,destinationHarbourId,value,fkTransportOrderId,fkShipId);
              }
             return cargo;
 
@@ -109,7 +115,9 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
                 int sourceHarbourId= rs.getInt(2);
                 int destinationHarbourId=rs.getInt(3);
                 double value = rs.getDouble(4);
-                Cargo cargo = new Cargo(id,sourceHarbourId,destinationHarbourId,value);
+                int fkTransportOrderId= rs.getInt(5);
+                int fkShipId= rs.getInt(6);
+                Cargo cargo = new Cargo(id,sourceHarbourId,destinationHarbourId,value,fkTransportOrderId,fkShipId);
                 cargos.add(cargo);
 
             }

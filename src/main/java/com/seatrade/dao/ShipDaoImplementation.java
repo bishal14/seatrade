@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ShipDaoImplementation implements GenericDAO<Ship> {
 
-    private static final String INSERT_SHIP="INSERT INTO ship (ship_id,name,cell_id) values (?,?,?)";
+    private static final String INSERT_SHIP="INSERT INTO ship (ship_id,name,fk_company_id,cell_id) values (?,?,?)";
     private static final String SELECT_SHIP_BY_ID="select ship_id,name,cell_id where id='";
     private static final String SELECT_ALL_SHIP  ="select * from ship";
     private static final String DELETE_SHIP ="delete from ship where ship_id='";

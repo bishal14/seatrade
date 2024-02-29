@@ -34,8 +34,8 @@ public class ShipParkingAssociationDaoImplementation implements GenericDAO<ShipH
     }
 
     @Override
-    public ShipHarbourAssociation update(ShipHarbourAssociation shipHarbourAssociation)
-    { try{
+    public ShipHarbourAssociation update(ShipHarbourAssociation shipHarbourAssociation) {
+        try{
         PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_SHIP_HARBOUR_ASSOCIATION);
          preparedStatement.setInt(2, shipHarbourAssociation.getFkShipId());
         preparedStatement.setInt(3, shipHarbourAssociation.getFkHarbourId());

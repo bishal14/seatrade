@@ -23,9 +23,9 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
     public Ship add(Ship ship) {
         try {
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_SHIP);
-            preparedStatement.setInt(1, ship.getId());
-            preparedStatement.setString(2, ship.getName());
-            preparedStatement.setInt(3, ship.getCellId());
+             preparedStatement.setString(2, ship.getName());
+             preparedStatement.setInt(3,ship.getFkCompanyId());
+            preparedStatement.setInt(4, ship.getCellId());
 
             preparedStatement.executeUpdate();
             return ship;
@@ -42,7 +42,8 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_SHIP);
             preparedStatement.setInt(1,ship.getId());
             preparedStatement.setString(2,ship.getName());
-            preparedStatement.setInt(3,ship.getCellId());
+            preparedStatement.setInt(3,ship.getFkCompanyId());
+            preparedStatement.setInt(4,ship.getCellId());
 
             preparedStatement.executeUpdate();
 
@@ -66,8 +67,10 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
             while (rs.next()){
                 int shipId= rs.getInt(1);
                 String shipName=rs.getString(2);
-                int cellId=rs.getInt(3);
-                ship = new Ship(shipId,shipName,cellId);
+                int fkCompnayId=rs.getInt(3)
+                int cellId=rs.getInt(4);
+
+                ship = new Ship(shipId,shipName,fkCompnayId,cellId);
             }
             return ship;
         } catch (SQLException e) {
@@ -92,17 +95,20 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
     @Override
     public List<Ship> listAll() {
         List<Ship> ships = new ArrayList<>();
+
         try{
         PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_SHIP);
         ResultSet rs = preparedStatement.executeQuery();
-
         while (rs.next()){
-        int id= rs.getInt(1);
-        String name = rs.getString(2);
-        int cellId=rs.getInt(3);
 
-            Ship ship = new Ship(id,name,cellId);
+            int shipId= rs.getInt(1);
+            String shipName=rs.getString(2);
+            int fkCompnayId=rs.getInt(3)
+            int cellId=rs.getInt(4);
+
+            Ship ship = new Ship(shipId,shipName,fkCompnayId,cellId);
             ships.add(ship);
+
         }
         return ships;
         } catch (SQLException e) {

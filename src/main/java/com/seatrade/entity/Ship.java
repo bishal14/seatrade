@@ -11,19 +11,23 @@ public class Ship {
 	private int id;
 
 	private String name;
+	private int fkCompanyId;
 	private int cellId;
 
 
 	private Position position;
 
-	public Ship(int id, String name, int cellId) {
+	public Ship(int id, String name,int fkCompanyId, int cellId) {
 		this.id = id;
+		this.fkCompanyId=fkCompanyId;
 		this.name = name;
 		this.cellId = cellId;
 	}
 
-	public Ship(String name, int cellId) {
+	public Ship(String name,int fkCompanyId, int cellId) {
 		this.name = name;
+		this.fkCompanyId=fkCompanyId;
+
 		this.cellId = cellId;
 	}
 
@@ -31,6 +35,9 @@ public class Ship {
 		return id;
 	}
 
+	public int getFkCompanyId() {
+		return fkCompanyId;
+	}
 
 	public String getName() {
 		return name;

@@ -52,7 +52,7 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         }
 
     }
-    }
+
 
     @Override
     public Ship get(Object id) {
@@ -110,4 +110,4 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         }
         }
     }
-}
+

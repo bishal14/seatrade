@@ -23,8 +23,7 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
 
         try {
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_HARBOUR);
-            preparedStatement.setInt(1, harbour.getId());
-            preparedStatement.setString(2, harbour.getName());
+             preparedStatement.setString(2, harbour.getName());
             preparedStatement.setInt(3, harbour.getCellId());
 
             preparedStatement.executeUpdate();

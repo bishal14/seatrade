@@ -13,18 +13,20 @@ import java.util.List;
 public class CompanyDaoImplementation implements GenericDAO<Company> {
 
 
-    private static final String INSERT_COMPANY="insert into company(name, company_id) values(?,?);";
+    private static final String INSERT_COMPANY="insert into company(name, company_id,company_balance) values(?,?);";
     private static final String SELECT_COMPANY_ID="select * from company where company_id='";
     private static final String SELECT_ALL_COMPANY="select * from company";
     private static final String DELETE_COMPANY="delete from company where company_id='";
-    private static final String UPDATE_COMPANY="update company set company_id=', name='";
+    private static final String UPDATE_COMPANY="update company set company_id=', name=', company_balance='";
     @Override
-    public Company create(Company company) {
+    public Company add(Company company) {
 
         try{
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_COMPANY);
             preparedStatement.setString(1,company.getName());
             preparedStatement.setInt(2,company.getCompanyId());
+            preparedStatement.setDouble(3,company.getCompanyBalance());
+
             preparedStatement.executeUpdate();
             return  company;
 
@@ -40,6 +42,8 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_COMPANY);
             preparedStatement.setString(1,company.getName());
             preparedStatement.setInt(2,company.getCompanyId());
+            preparedStatement.setDouble(3,company.getCompanyBalance());
+
             return company;
         } catch (SQLException e) {
             throw new RuntimeException(e);

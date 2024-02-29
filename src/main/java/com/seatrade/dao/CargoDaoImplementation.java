@@ -21,15 +21,15 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
     private static final String DELETE_CARGOS="delete from cargo where cargo_id='";
     private static final String UPDATE_CARGO="update cargo set cargo_id=',harbour_source_id=', harbour_destination_id=', value=' where id =',fk_transport_order_id=', fk_ship_id='";
     @Override
-    public Cargo create(Cargo cargo) {
+    public Cargo add(Cargo cargo) {
 
         try{
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_CARGOS);
-             preparedStatement.setInt(2,cargo.getId());
-            preparedStatement.setInt(3,cargo.getSourceHarbourId());
+             preparedStatement.setInt(2,cargo.getSourceHarbourId());
+            preparedStatement.setInt(3,cargo.getDestinationHarbourId());
             preparedStatement.setDouble(4,cargo.getValue());
-            preparedStatement.setInt(5,cargo.getSourceHarbourId());
-            preparedStatement.setInt(6,cargo.getDestinationHarbourId());
+            preparedStatement.setInt(5,cargo.getFkTransportId());
+            preparedStatement.setInt(6,cargo.getFkShipId());
             preparedStatement.executeUpdate();
             return cargo;
         } catch (SQLException e) {
@@ -45,11 +45,11 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
     try{
         PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_CARGO);
         preparedStatement.setInt(1,cargo.getId());
-        preparedStatement.setInt(2,cargo.getId());
-        preparedStatement.setInt(3,cargo.getSourceHarbourId());
+        preparedStatement.setInt(2,cargo.getSourceHarbourId());
+        preparedStatement.setInt(3,cargo.getDestinationHarbourId());
         preparedStatement.setDouble(4,cargo.getValue());
-        preparedStatement.setInt(5,cargo.getSourceHarbourId());
-        preparedStatement.setInt(6,cargo.getDestinationHarbourId());
+        preparedStatement.setInt(5,cargo.getFkTransportId());
+        preparedStatement.setInt(6,cargo.getFkShipId());
         preparedStatement.executeUpdate();
         return cargo;
     }catch (SQLException e) {

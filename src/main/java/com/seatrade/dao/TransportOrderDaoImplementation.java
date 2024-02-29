@@ -19,7 +19,7 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
     private static final String UPDATE_TRANSPORT_ORDE="update transportorder set transporter_id=',k_company_id=', fk_ship_id='";
 
     @Override
-    public TransportOrder create(TransportOrder transportOrder) {
+    public TransportOrder add(TransportOrder transportOrder) {
         try {
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_TRANSPORT_ORDER);
             preparedStatement.setInt(1, transportOrder.getTransportOrderId());

@@ -4,10 +4,18 @@ public class Company {
     private String name;
     private int companyId;
 
-    public Company(String name, int companyId) {
+    private  double companyBalance;
+
+    public Company(String name, int companyId, double companyBalance) {
 
         this.name = name;
         this.companyId = companyId;
+        this.companyBalance = companyBalance;
+    }
+
+    public Company(String name, double companyBalance) {
+        this.name = name;
+        this.companyBalance = companyBalance;
     }
 
     public Company(String name) {
@@ -20,5 +28,9 @@ public class Company {
 
     public int getCompanyId() {
         return companyId;
+    }
+
+    public double getCompanyBalance() {
+        return companyBalance;
     }
 }

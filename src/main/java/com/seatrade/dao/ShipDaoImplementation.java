@@ -20,7 +20,7 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
     private static final String UPDATE_SHIP="update ship set ship_id=',name=', cell_id='";
 
     @Override
-    public Ship create(Ship ship) {
+    public Ship add(Ship ship) {
         try {
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_SHIP);
             preparedStatement.setInt(1, ship.getId());

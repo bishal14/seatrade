@@ -19,7 +19,7 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
     private static final String UPDATE_HARBOUR="update harbour set id=',name=', id='";
 
     @Override
-    public Harbour create(Harbour harbour) {
+    public Harbour add(Harbour harbour) {
 
         try {
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_HARBOUR);

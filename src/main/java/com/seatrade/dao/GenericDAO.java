@@ -1,11 +1,9 @@
 package com.seatrade.dao;
 
-import com.seatrade.entity.Company;
-
 import java.util.List;
 
 public interface GenericDAO<T> {
-    T create(T t);
+    T add(T t);
     T update(T t);
 
  

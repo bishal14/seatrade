@@ -18,7 +18,7 @@ public class ShipParkingAssociationDaoImplementation implements GenericDAO<ShipH
     private static final String UPDATE_SHIP_HARBOUR_ASSOCIATION="update shipharbourassociation set ship_harbour_id=',fk_ship_id=', fk_harbour_id='";
 
     @Override
-    public ShipHarbourAssociation create(ShipHarbourAssociation shipHarbourAssociation) {
+    public ShipHarbourAssociation add(ShipHarbourAssociation shipHarbourAssociation) {
 
         try {
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_SHIP_HARBOUR_ASSOCIATION);

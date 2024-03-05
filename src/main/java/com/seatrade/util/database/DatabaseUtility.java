@@ -1,8 +1,8 @@
 package com.seatrade.util.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import org.hibernate.annotations.processing.SQL;
+
+import java.sql.*;
 
 public class DatabaseUtility {
 
@@ -20,6 +20,7 @@ public class DatabaseUtility {
     }
 
     // Method to get a database connection
+    // where is connection opened?
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
@@ -33,5 +34,31 @@ public class DatabaseUtility {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void closeResources(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet){
+        if(connection != null){
+            try{
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if(preparedStatement != null){
+            try{
+                preparedStatement.close();
+            } catch (SQLException ex){
+                ex.getMessage();
+            }
+        }
+        if(resultSet != null){
+            try {
+                resultSet.close();
+
+            } catch (SQLException ex){
+                throw  new RuntimeException();
+            }
+        }
+
     }
 }

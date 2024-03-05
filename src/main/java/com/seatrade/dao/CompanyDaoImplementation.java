@@ -4,6 +4,7 @@ import com.seatrade.entity.Cargo;
 import com.seatrade.entity.Company;
 import com.seatrade.util.database.DatabaseUtility;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,9 +21,12 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
     private static final String UPDATE_COMPANY="update company set  name=', company_id=',company_balance='";
     @Override
     public Company add(Company company) {
-
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
         try{
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_COMPANY);
+            connection = DatabaseUtility.getConnection();
+             preparedStatement = connection.prepareStatement(INSERT_COMPANY);
             preparedStatement.setString(1,company.getName());
              preparedStatement.setDouble(3,company.getCompanyBalance());
 
@@ -31,14 +35,20 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
-     }
+        }
+
 
     @Override
     public Company update(Company company) {
-
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
         try{
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_COMPANY);
+            connection = DatabaseUtility.getConnection();
+              preparedStatement = connection.prepareStatement(UPDATE_COMPANY);
             preparedStatement.setString(1,company.getName());
             preparedStatement.setInt(2,company.getCompanyId());
             preparedStatement.setDouble(3,company.getCompanyBalance());
@@ -46,18 +56,25 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
             return company;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
+        }
         }
 
-     }
+
+
 
     @Override
-    public Company get(Object id)   {
+    public Company get(Object id) throws SQLException {
         Company company = null;
         String idString = SELECT_COMPANY_ID.concat(id.toString());
         PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = DatabaseUtility.getConnection().prepareStatement(idString);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        Connection connection = null;
+        ResultSet resultSet = null;
+        try{
+            connection = DatabaseUtility.getConnection();
+            preparedStatement = connection.prepareStatement(idString);
+              resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
                 String companyName=resultSet.getString(1);
@@ -71,6 +88,8 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
 
 
@@ -80,26 +99,34 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
     public void delete(Object id) {
         Company company = null;
         String delete = DELETE_COMPANY.concat(id.toString());
-
-
-            try {
-                PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(delete);
-                preparedStatement.setInt(2,Integer.parseInt(id.toString()));
-                preparedStatement.executeUpdate();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
+        try {
+            connection = DatabaseUtility.getConnection();
+            preparedStatement = DatabaseUtility.getConnection().prepareStatement(delete);
+            preparedStatement.setInt(2, Integer.parseInt(id.toString()));
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DatabaseUtility.closeResources(connection, preparedStatement, resultSet);
+        }
 
 
     }
 
+
     @Override
-    public List<Company> listAll()  {
+    public List<Company> listAll() throws SQLException {
         List<Company> companies = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet rs = null;
         try{
-        PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_COMPANY);
-        ResultSet rs =preparedStatement.executeQuery();
+            connection = DatabaseUtility.getConnection();
+          preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_COMPANY);
+          rs =preparedStatement.executeQuery();
 
         while (rs.next()){
             String name=rs.getString(1);
@@ -113,6 +140,7 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
         return companies;
     } catch (SQLException e) {
         throw new RuntimeException(e);
-    }
-}
+    }finally {
+            DatabaseUtility.closeResources(connection, preparedStatement, rs);
+        } }
 }

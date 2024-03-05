@@ -82,7 +82,8 @@ public class ShipAppGUI extends JFrame {
         unloadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //
+                JOptionPane.showMessageDialog(null, "cargo is unloaded!");
+
             }
         });
 
@@ -90,13 +91,19 @@ public class ShipAppGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //
+                String harbourName = "Example Harbour"; // Replace this with actual company name retrieval logic, if necessary.
+
+                // if position of harbour and ship is same,
+                JOptionPane.showMessageDialog(null, "ship is arrived at " + harbourName);
             }
+
         });
 
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //
+                JOptionPane.showMessageDialog(null, "cargo is loaded" );
+
             }
         });
 

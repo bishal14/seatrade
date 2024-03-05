@@ -6,7 +6,9 @@ import com.seatrade.entity.Company;
 import com.seatrade.entity.CompanyApp;
 import com.seatrade.entity.Harbour;
 import com.seatrade.util.database.DatabaseUtility;
+import org.hibernate.annotations.processing.SQL;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,10 +24,14 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
     private static final String UPDATE_CARGO="update cargo set cargo_id=',harbour_source_id=', harbour_destination_id=', value=' where id =',fk_transport_order_id=', fk_ship_id='";
     @Override
     public Cargo add(Cargo cargo) {
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
 
         try{
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_CARGOS);
-             preparedStatement.setInt(2,cargo.getSourceHarbourId());
+            connection = DatabaseUtility.getConnection();
+              preparedStatement = connection.prepareStatement(INSERT_CARGOS);
+            preparedStatement.setInt(2,cargo.getSourceHarbourId());
             preparedStatement.setInt(3,cargo.getDestinationHarbourId());
             preparedStatement.setDouble(4,cargo.getValue());
             preparedStatement.setInt(5,cargo.getFkTransportId());
@@ -34,16 +40,21 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
             return cargo;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
+        } finally {
+             DatabaseUtility.closeResources(connection, preparedStatement,resultSet);
 
-
-
+    }
     }
 
     @Override
     public Cargo update(Cargo cargo) {
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
     try{
-        PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_CARGO);
+        connection = DatabaseUtility.getConnection();
+
+        preparedStatement = connection.prepareStatement(UPDATE_CARGO);
         preparedStatement.setInt(1,cargo.getId());
         preparedStatement.setInt(2,cargo.getSourceHarbourId());
         preparedStatement.setInt(3,cargo.getDestinationHarbourId());
@@ -54,6 +65,8 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
         return cargo;
     }catch (SQLException e) {
         throw new RuntimeException(e);
+    } finally {
+        DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
     }
 
 
@@ -65,11 +78,15 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
          Cargo cargo = null;
 
         String idString = SELECT_CARGO_BY_ID.concat(id.toString());
-
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
         try{
-            PreparedStatement preparedStatement= DatabaseUtility.getConnection().prepareStatement(idString);
+            connection = DatabaseUtility.getConnection();
+
+              preparedStatement= connection.prepareStatement(idString);
             preparedStatement.setInt(1,Integer.parseInt(id.toString()));
-            ResultSet resultSet = preparedStatement.executeQuery();
+              resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
                int sourceHarbourId= resultSet.getInt(2);
@@ -83,6 +100,8 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
     }
 
@@ -91,12 +110,18 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
     public void delete(Object cargoId) {
         String idString = DELETE_CARGOS.concat(cargoId.toString());
 
-        try {
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(idString);
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
+        try{
+            connection = DatabaseUtility.getConnection();
+              preparedStatement = DatabaseUtility.getConnection().prepareStatement(idString);
             preparedStatement.setInt(1,Integer.parseInt(cargoId.toString()));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
 
     }
@@ -106,9 +131,13 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
     public List<Cargo> listAll() {
 
         List<Cargo> cargos = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet rs = null;
         try{
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_CARGOS);
-            ResultSet rs =preparedStatement.executeQuery();
+            connection = DatabaseUtility.getConnection();
+              preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_CARGOS);
+              rs =preparedStatement.executeQuery();
 
             while (rs.next()){
                 int id = rs.getInt(1);
@@ -124,6 +153,8 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
             return cargos;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,rs);
         }
     }
 }

@@ -1,6 +1,9 @@
 package com.seatrade;
 
+import com.seatrade.dao.CompanyDaoImplementation;
+import com.seatrade.entity.Company;
 import com.seatrade.entity.CompanyApp;
+import com.seatrade.util.database.DatabaseUtility;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,6 +48,14 @@ public class CompanyAppGUI {
         commandPanel.add(new JLabel("Enter command: "));
         commandPanel.add(commandTextField);
 
+        JLabel companyName = new JLabel();
+        JTextField textField = new JTextField(30);
+        JPanel companyNamePannel = new JPanel();
+        companyNamePannel.add(companyName);
+        commandPanel.add(textField);
+
+
+
         // Buttons Panel
         JPanel buttonsPanel = new JPanel(new GridLayout(0, 2)); // Adjust GridLayout rows, cols as needed
         JButton sendButton = new JButton("Send");
@@ -72,6 +83,7 @@ public class CompanyAppGUI {
 
         // Add components to frame
         frame.getContentPane().add(topPanel, BorderLayout.NORTH);
+       //frame.getContentPane().add(companyNamePannel,BorderLayout.PAGE_START);
         frame.getContentPane().add(commandPanel, BorderLayout.CENTER);
         frame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
         frame.getContentPane().add(scrollPane, BorderLayout.EAST); // Adjust this if needed
@@ -96,14 +108,20 @@ public class CompanyAppGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // command send??
-            }
+             }
         });
 
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //add company in company database,
+                String companyName = "Example Company"; // Replace this with actual company name retrieval logic, if necessary.
+                Company company = new Company(companyName);
+                // This line displays the dialog.
+
+                Company aompany = new CompanyDaoImplementation().add(company);
+                JOptionPane.showMessageDialog(null, "Company with name " + companyName + " with default size, width, height, and deposit is registered.", "Registration Successful", JOptionPane.INFORMATION_MESSAGE);
             }
+
         });
         newCargoButton.addActionListener(new ActionListener() {
             @Override
@@ -155,5 +173,13 @@ public class CompanyAppGUI {
 
     }
 
+
+    public void showCargosList(){
+
+    }
+
+    public void showHarbourList(){
+
+    }
 
 }

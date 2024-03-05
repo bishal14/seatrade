@@ -1,5 +1,7 @@
 package org.example.sea;
 
+import com.seatrade.Ground;
+
 import java.io.Serializable;
 
 public class RadarScreen implements Serializable {

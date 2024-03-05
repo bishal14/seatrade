@@ -14,6 +14,9 @@ public class Ship {
 	private int fkCompanyId;
 	private int cellId;
 
+	public int getFkCompanyId() {
+		return fkCompanyId;
+	}
 
 	private Position position;
 
@@ -35,9 +38,6 @@ public class Ship {
 		return id;
 	}
 
-	public int getFkCompanyId() {
-		return fkCompanyId;
-	}
 
 	public String getName() {
 		return name;

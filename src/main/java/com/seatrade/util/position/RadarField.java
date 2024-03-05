@@ -1,9 +1,6 @@
 package com.seatrade.util.position;
-<<<<<<< HEAD:src/main/java/com/seatrade/util/position/RadarField.java
 
 import com.seatrade.Ground;
-=======
->>>>>>> c8e6b9cc36783f16613c9565324c84cf65e1e1e3:src/main/java/com/seatrade/util/position/RadarField.java
 
 import com.seatrade.Ground;
 

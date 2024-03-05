@@ -7,12 +7,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.Socket;
 
 public class CompanyAppGUI {
     private CompanyApp companyApp;
     private JTextArea responseTextArea;
 
-    public CompanyAppGUI(CompanyApp companyApp) {
+    public CompanyAppGUI() {
         this.companyApp = companyApp;
 
         // Erstelle das Hauptfenster
@@ -65,18 +66,13 @@ public class CompanyAppGUI {
     }
 
     private void sendCommand(String command) {
-        try {
-            companyApp.sendMessage(command);
-            String response;
-            while ((response = companyApp.receiveMessage()) != null) {
-                appendResponse(response);
-                if (response.startsWith("endinfo")) {
-                    break;
-                }
+        companyApp.sendMessage(command);
+        String response;
+        while ((response = companyApp.receiveMessage()) != null) {
+            appendResponse(response);
+            if (response.startsWith("endinfo")) {
+                break;
             }
-        } catch (IOException ex) {
-            appendResponse("Error: " + ex.getMessage());
-            ex.printStackTrace();
         }
     }
 
@@ -84,9 +80,9 @@ public class CompanyAppGUI {
         responseTextArea.append(response + "\n");
     }
 
-    public static void main(String[] args) {
-        CompanyApp companyApp = new CompanyApp(8082, "TestCompany");
-        CompanyAppGUI companyAppGUI = new CompanyAppGUI(companyApp);
+    public static void main(String[] args) throws IOException {
+        CompanyApp companyApp = new CompanyApp(new Socket(), "TestCompany");
+        CompanyAppGUI companyAppGUI = new CompanyAppGUI();
         companyAppGUI.start();
     }
 

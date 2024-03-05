@@ -67,7 +67,7 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
             while (rs.next()){
                 int shipId= rs.getInt(1);
                 String shipName=rs.getString(2);
-                int fkCompnayId=rs.getInt(3)
+                int fkCompnayId=rs.getInt(3);
                 int cellId=rs.getInt(4);
 
                 ship = new Ship(shipId,shipName,fkCompnayId,cellId);
@@ -103,7 +103,7 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
 
             int shipId= rs.getInt(1);
             String shipName=rs.getString(2);
-            int fkCompnayId=rs.getInt(3)
+            int fkCompnayId=rs.getInt(3);
             int cellId=rs.getInt(4);
 
             Ship ship = new Ship(shipId,shipName,fkCompnayId,cellId);

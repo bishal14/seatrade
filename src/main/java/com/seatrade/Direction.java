@@ -1,8 +1,4 @@
 package com.seatrade;
-<<<<<<< HEAD:src/main/java/com/seatrade/Direction.java
-=======
-
->>>>>>> c8e6b9cc36783f16613c9565324c84cf65e1e1e3:src/main/java/com/seatrade/Direction.java
 
 // Fahrtrichtung des Schiffs 
 
@@ -16,5 +12,5 @@ public enum Direction {
 	EAST,
 	SOUTH,
 	WEST,
-	NONE
+	NONE;
 }

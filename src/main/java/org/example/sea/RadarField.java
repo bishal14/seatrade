@@ -1,5 +1,7 @@
 package org.example.sea;
 
+import com.seatrade.Ground;
+
 public class RadarField {
 	private Ground ground;
 	private boolean hasShip;

@@ -1,4 +1,6 @@
 package org.example.sea;
+import com.seatrade.Direction;
+
 import java.io.Serializable;
 
 // Positionsdaten

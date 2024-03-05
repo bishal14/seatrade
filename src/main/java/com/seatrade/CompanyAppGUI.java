@@ -1,17 +1,20 @@
 package com.seatrade;
 
 import com.seatrade.dao.CompanyDaoImplementation;
+import com.seatrade.dao.HarbourDaoImplementation;
 import com.seatrade.entity.Company;
 import com.seatrade.entity.CompanyApp;
+import com.seatrade.entity.Harbour;
 import com.seatrade.util.database.DatabaseUtility;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
-
+import java.util.List;
 public class CompanyAppGUI {
     private CompanyApp companyApp;
     private JTextArea responseTextArea;
@@ -116,10 +119,31 @@ public class CompanyAppGUI {
             public void actionPerformed(ActionEvent e) {
                 String companyName = "Example Company"; // Replace this with actual company name retrieval logic, if necessary.
                 Company company = new Company(companyName);
-                // This line displays the dialog.
+                 // This line displays the dialog.
+                /*
+                    Harbour harbour1 = new Harbour(25, 9, "NONE", "lissabon");
+                    Harbour harbour2 = new Harbour(24, 16, "NONE", "dakar");
+                    Harbour harbour3 = new Harbour(29, 13, "NONE", "algier");
+                    Harbour harbour4 = new Harbour(29, 18, "NONE", "cotonau");
+                    Harbour harbour5 = new Harbour(2, 3, "NONE", "halifax");
+                    Harbour harbour6 = new Harbour(29, 0, "NONE", "plymouth");
+                    Harbour harbour7 = new Harbour(28, 5, "NONE", "brest");
+                    Harbour harbour8 = new Harbour(0, 10, "NONE", "ney york");
+                    Harbour harbour9 = new Harbour(2, 18, "NONE", "carracas");
 
-                Company aompany = new CompanyDaoImplementation().add(company);
-                JOptionPane.showMessageDialog(null, "Company with name " + companyName + " with default size, width, height, and deposit is registered.", "Registration Successful", JOptionPane.INFORMATION_MESSAGE);
+                    HarbourDaoImplementation harbourDaoImplementation = new HarbourDaoImplementation();
+                    harbourDaoImplementation.add(harbour1);
+                    harbourDaoImplementation.add(harbour2);
+                    harbourDaoImplementation.add(harbour3);
+                    harbourDaoImplementation.add(harbour4);
+                    harbourDaoImplementation.add(harbour5);
+                    harbourDaoImplementation.add(harbour6);
+                    harbourDaoImplementation.add(harbour7);
+                    harbourDaoImplementation.add(harbour8);
+                    harbourDaoImplementation.add(harbour9);
+                    JOptionPane.showMessageDialog(null, "Company with name " + companyName + " with default size, width, height, and deposit is registered.", "Registration Successful", JOptionPane.INFORMATION_MESSAGE);
+                */
+                showHarbourList();
             }
 
         });
@@ -178,8 +202,27 @@ public class CompanyAppGUI {
 
     }
 
+
     public void showHarbourList(){
+        HarbourDaoImplementation harbourDaoImplementation = new HarbourDaoImplementation();
+        List<Harbour> harbours = harbourDaoImplementation.listAll();
+        System.out.println("size of harbours is "+harbours.size());
 
+        String[] columnNames = {"Harbour ID", "X Position", "Y Position", "Direction", "Name"};
+
+        // Create a table model
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+
+        // Populate the table model with harbour data
+        for (Harbour harbour : harbours) {
+            model.addRow(new Object[]{harbour.getHarbourId(), harbour.getxPosition(), harbour.getyPosition(), harbour.getDirection(), harbour.getName()});
+        }
+
+        // Create the table and add it to a scroll pane
+        JTable table = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        // Display the table within a JOptionPane dialog
+        JOptionPane.showMessageDialog(null, scrollPane, "List of Harbours", JOptionPane.INFORMATION_MESSAGE);
     }
-
 }

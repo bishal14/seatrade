@@ -3,49 +3,34 @@ package com.seatrade.entity;
 
 public class Cargo {
 
-	private int id;
-	private int sourceHarbourId;
-	private int  destinationHarbourId;
+	private int cargoId;
+	private String sourceHarbour;
+	private String  destinationHarbour;
 	private double value;
-
 	private int fkTransportId;
 	private int fkShipId;
 
-
-
-	public Cargo(int id, int sourceHarbourId, int destinationHarbourId, double value, int fkTransportId, int fkShipId) {
-		this.id = id;
-		this.sourceHarbourId = sourceHarbourId;
-		this.destinationHarbourId = destinationHarbourId;
+	public Cargo(String sourceHarbour, String destinationHarbour, double value) {
+		this.sourceHarbour = sourceHarbour;
+		this.destinationHarbour = destinationHarbour;
 		this.value = value;
-		this.fkTransportId = fkTransportId;
-		this.fkShipId = fkShipId;
 	}
 
-	public Cargo(int sourceHarbourId, int destinationHarbourId, double value, int fkTransportId, int fkShipId) {
-		this.sourceHarbourId = sourceHarbourId;
-		this.destinationHarbourId = destinationHarbourId;
-		this.value = value;
-		this.fkTransportId = fkTransportId;
-		this.fkShipId = fkShipId;
+	public int getCargoId() {
+		return cargoId;
 	}
 
-	public int getId() {
-		return id;
+	public String getSourceHarbour() {
+		return sourceHarbour;
 	}
 
-	public int getSourceHarbourId() {
-		return sourceHarbourId;
-	}
-
-	public int getDestinationHarbourId() {
-		return destinationHarbourId;
+	public String getDestinationHarbour() {
+		return destinationHarbour;
 	}
 
 	public double getValue() {
 		return value;
 	}
-
 
 	public int getFkTransportId() {
 		return fkTransportId;
@@ -57,7 +42,7 @@ public class Cargo {
 
 	@Override
 	public String toString() {
-		return "CARGO|" + id + "|"+ sourceHarbourId +"|"+ destinationHarbourId + "|" +value;
+		return "CARGO|" + cargoId + "|"+ sourceHarbour +"|"+ destinationHarbour + "|" +value;
 	}
 	
 	public static Cargo parse(String s){

@@ -14,11 +14,11 @@ import java.util.List;
 public class CompanyDaoImplementation implements GenericDAO<Company> {
 
 
-    private static final String INSERT_COMPANY="insert into company(name, company_id,company_balance) values(?,?);";
-    private static final String SELECT_COMPANY_ID="select * from company where company_id='";
+    private static final String INSERT_COMPANY="insert into company(name,height,width ,companyBalance) values(?,?,?,?);";
+    private static final String SELECT_COMPANY_ID="select * from company where companyId='";
     private static final String SELECT_ALL_COMPANY="select * from company";
-    private static final String DELETE_COMPANY="delete from company where company_id='";
-    private static final String UPDATE_COMPANY="update company set  name=', company_id=',company_balance='";
+    private static final String DELETE_COMPANY="delete from company where companyId='";
+    private static final String UPDATE_COMPANY="update company set  name=', companyId=',company_balance='";
     @Override
     public Company add(Company company) {
         PreparedStatement preparedStatement = null;
@@ -28,9 +28,10 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
             connection = DatabaseUtility.getConnection();
              preparedStatement = connection.prepareStatement(INSERT_COMPANY);
             preparedStatement.setString(1,company.getName());
-             preparedStatement.setDouble(3,company.getCompanyBalance());
-
-            preparedStatement.executeUpdate();
+            preparedStatement.setInt(2,5);
+            preparedStatement.setInt(3,5);
+             preparedStatement.setDouble(4,20000);
+             preparedStatement.executeUpdate();
             return  company;
 
         } catch (SQLException e) {
@@ -48,7 +49,7 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
         ResultSet resultSet = null;
         try{
             connection = DatabaseUtility.getConnection();
-              preparedStatement = connection.prepareStatement(UPDATE_COMPANY);
+            preparedStatement = connection.prepareStatement(UPDATE_COMPANY);
             preparedStatement.setString(1,company.getName());
             preparedStatement.setInt(2,company.getCompanyId());
             preparedStatement.setDouble(3,company.getCompanyBalance());
@@ -79,7 +80,7 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
             while (resultSet.next()){
                 String companyName=resultSet.getString(1);
                 int companyId=resultSet.getInt(2);
-                double balance = resultSet.getDouble(3);
+                double balance = resultSet.getInt(3);
                 company = new Company(companyName,companyId,balance);
 
             }
@@ -104,7 +105,7 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
         ResultSet resultSet = null;
         try {
             connection = DatabaseUtility.getConnection();
-            preparedStatement = DatabaseUtility.getConnection().prepareStatement(delete);
+            preparedStatement = connection.prepareStatement(delete);
             preparedStatement.setInt(2, Integer.parseInt(id.toString()));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

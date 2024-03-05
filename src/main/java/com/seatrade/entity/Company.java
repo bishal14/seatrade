@@ -2,6 +2,8 @@ package com.seatrade.entity;
 
 public class Company {
     private String name;
+    private int width;
+    private int height;
     private int companyId;
 
     private  double companyBalance;
@@ -20,6 +22,21 @@ public class Company {
 
     public Company(String name) {
         this.name = name;
+        this.companyBalance= 20000;
+        this.width=5;
+        this.height=5;
+    }
+
+    public Company(int companyId) {
+        this.companyId=companyId;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public String getName() {

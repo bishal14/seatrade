@@ -7,8 +7,8 @@ import java.sql.*;
 public class DatabaseUtility {
 
     private static final String URL = "jdbc:mysql://localhost:3306/seatrade";
-    private static final String USER = "justin";
-    private static final String PASSWORD = "bishal";
+    private static final String USER = "root";
+    private static final String PASSWORD = "admin";
 
     // Static block to load the JDBC driver
     static {
@@ -37,11 +37,13 @@ public class DatabaseUtility {
     }
 
     public static void closeResources(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet){
-        if(connection != null){
-            try{
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+
+        if(resultSet != null){
+            try {
+                resultSet.close();
+
+            } catch (SQLException ex){
+                throw  new RuntimeException("Error closing ResultSet",ex);
             }
         }
         if(preparedStatement != null){
@@ -49,14 +51,15 @@ public class DatabaseUtility {
                 preparedStatement.close();
             } catch (SQLException ex){
                 ex.getMessage();
+                throw  new RuntimeException("Erro closing preparedstatement ",ex);
+
             }
         }
-        if(resultSet != null){
-            try {
-                resultSet.close();
-
-            } catch (SQLException ex){
-                throw  new RuntimeException();
+        if(connection != null){
+            try{
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException("Error closing connection",e);
             }
         }
 

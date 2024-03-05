@@ -1,13 +1,17 @@
 package com.seatrade.entity;
 
 import com.seatrade.Receiver;
+import com.seatrade.dao.CompanyDaoImplementation;
+import com.seatrade.dao.HarbourDaoImplementation;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
 
 public class CompanyApp implements MessageHandler{
 
@@ -100,4 +104,44 @@ public class CompanyApp implements MessageHandler{
 	public String receiveMessage() {
 		return "";
 	}
+
+	public Company registerCompany(String companyName){
+		Company company = new Company(companyName);
+		CompanyDaoImplementation companyDaoImplementation = new CompanyDaoImplementation();
+		companyDaoImplementation.add(company);
+		return company;
+	}
+
+
+	public Harbour addHarbour( ){
+		Harbour harbour1 = new Harbour(25,9,"NONE","lissabon");
+		Harbour harbour2 = new Harbour(24,16,"NONE","dakar");
+		Harbour harbour3 = new Harbour(29,13,"NONE","algier");
+		Harbour harbour4 = new Harbour(29,18,"NONE","cotonau");
+		Harbour harbour5 = new Harbour(2,3,"NONE","halifax");
+		Harbour harbour6 = new Harbour(29,0,"NONE","plymouth");
+		Harbour harbour7 = new Harbour(28,5,"NONE","brest");
+		Harbour harbour8 = new Harbour(0,10,"NONE","ney york");
+		Harbour harbour9 = new Harbour(2,18,"NONE","carracas");
+
+		HarbourDaoImplementation harbourDaoImplementation = new HarbourDaoImplementation();
+		harbourDaoImplementation.add(harbour1);
+		harbourDaoImplementation.add(harbour2);
+		harbourDaoImplementation.add(harbour3);
+		harbourDaoImplementation.add(harbour4);
+		harbourDaoImplementation.add(harbour5);
+		harbourDaoImplementation.add(harbour6);
+		harbourDaoImplementation.add(harbour7);
+		harbourDaoImplementation.add(harbour8);
+		harbourDaoImplementation.add(harbour9);
+
+
+		return  harbour1;
+	}
+
+
+
+
+
+
 }

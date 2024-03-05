@@ -47,24 +47,22 @@ public class ShipAppGUI extends JFrame {
 
         // Buttons Panel
         JPanel buttonsPanel = new JPanel(new GridLayout(0, 2)); // Adjust GridLayout rows, cols as needed
-        JButton sendButton = new JButton("Send");
-        JButton getInfoHarbourButton = new JButton("getInfoHarbour");
-        JButton registerButton = new JButton("Register");
-        JButton newCargoButton = new JButton("newCargo");
-        JButton getInfoCargoButton = new JButton("getInfoCargo");
+        JButton unloadButton = new JButton("unload");
+        JButton moveToButton = new JButton("moveTo");
+        JButton loadButton = new JButton("load");
         JButton exitButton = new JButton("exit");
-
+        JButton launchCompanyHarbourButton = new JButton("launchCompanyHarbour");
+ 
         // Adding action listeners to buttons (you need to implement sendCommand and other methods)
-        sendButton.addActionListener(e -> sendCommand(commandTextField.getText()));
+        unloadButton.addActionListener(e -> sendCommand(commandTextField.getText()));
 
         // Add buttons to panel
-        buttonsPanel.add(sendButton);
-        buttonsPanel.add(getInfoHarbourButton);
-        buttonsPanel.add(registerButton);
-        buttonsPanel.add(newCargoButton);
-        buttonsPanel.add(getInfoCargoButton);
+        buttonsPanel.add(unloadButton);
+        buttonsPanel.add(moveToButton);
+        buttonsPanel.add(loadButton);
         buttonsPanel.add(exitButton);
-
+        buttonsPanel.add(launchCompanyHarbourButton);
+ 
         // Response Text Area
         responseTextArea = new JTextArea();
         responseTextArea.setEditable(false);
@@ -80,7 +78,42 @@ public class ShipAppGUI extends JFrame {
         frame.pack(); // Adjusts window size to fit components
         frame.setLocationRelativeTo(null); // Center the window
         frame.setVisible(true);
+
+        unloadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //
+            }
+        });
+
+        moveToButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //
+            }
+        });
+
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //
+            }
+        });
+
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //
+            }
+        });
+        launchCompanyHarbourButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //
+            }
+        });
     }
+    
 
     private void sendCommand(String command) {
         // Dummy implementation - Replace this with actual functionality

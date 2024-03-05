@@ -14,54 +14,74 @@ public class CompanyAppGUI {
     private JTextArea responseTextArea;
 
     public CompanyAppGUI() {
-        this.companyApp = companyApp;
-
-        // Erstelle das Hauptfenster
         JFrame frame = new JFrame("CompanyApp");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 700);
 
+        // Server and Client Labels
+        JLabel serverLabel = new JLabel("Server");
+        JLabel clientLabel = new JLabel("Client");
+        JLabel companyNameLabel = new JLabel("Company Name: ");
 
-        JLabel server = new JLabel("Server");
-        JLabel client = new JLabel("Client");
-        JLabel companyName =new JLabel("company Name: ");
-        String[] serverarray = {"Sea Trade", "CompanyApp"};
-        String[] clientarray = {"Sea Trade", "CompanyApp"};
-
-        JList<String> serverList = new JList(serverarray);
-
-
-        JList<String> clientList = new JList<>(clientarray);
-
-        JScrollPane scrollPaneTopClient = new JScrollPane(clientList);
+        // Server and Client Lists
+        String[] serverArray = {"Sea Trade", "CompanyApp"};
+        String[] clientArray = {"Sea Trade", "CompanyApp"};
+        JList<String> serverList = new JList<>(serverArray);
+        JList<String> clientList = new JList<>(clientArray);
         JScrollPane scrollPaneServer = new JScrollPane(serverList);
-        serverList.setLayoutOrientation(JList.VERTICAL);
-        clientList.setLayoutOrientation(JList.VERTICAL);
+        JScrollPane scrollPaneClient = new JScrollPane(clientList);
 
+        // Top panel for labels and lists
+        JPanel topPanel = new JPanel();
+        topPanel.add(serverLabel);
+        topPanel.add(scrollPaneServer);
+        topPanel.add(clientLabel);
+        topPanel.add(scrollPaneClient);
+        topPanel.add(companyNameLabel);
 
-        JPanel top = new JPanel();
-        top.add(server);
-        top.add(client);
-        top.add(companyName);
+        // Command Input Panel
+        JTextField commandTextField = new JTextField(20);
+        JPanel commandPanel = new JPanel();
+        commandPanel.add(new JLabel("Enter command: "));
+        commandPanel.add(commandTextField);
 
-        // Erstelle ein Textfeld für die Befehlseingabe
-        JTextField commandTextField = new JTextField();
-        commandTextField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String command = commandTextField.getText();
-                sendCommand(command);
-                commandTextField.setText("");
-            }
-        });
-
-        // Erstelle einen Button zum Senden des Befehls
+        // Buttons Panel
+        JPanel buttonsPanel = new JPanel(new GridLayout(0, 2)); // Adjust GridLayout rows, cols as needed
         JButton sendButton = new JButton("Send");
         JButton getInfoHarbourButton = new JButton("getInfoHarbour");
-        JButton register = new JButton("Register");
-        JButton newCargo= new JButton("newCargo");
-        JButton getInfoCargo = new JButton("getInfoCargo");
-        JButton exit = new JButton("exit");
+        JButton registerButton = new JButton("Register");
+        JButton newCargoButton = new JButton("newCargo");
+        JButton getInfoCargoButton = new JButton("getInfoCargo");
+        JButton exitButton = new JButton("exit");
+
+        // Adding action listeners to buttons (you need to implement sendCommand and other methods)
+        sendButton.addActionListener(e -> sendCommand(commandTextField.getText()));
+
+        // Add buttons to panel
+        buttonsPanel.add(sendButton);
+        buttonsPanel.add(getInfoHarbourButton);
+        buttonsPanel.add(registerButton);
+        buttonsPanel.add(newCargoButton);
+        buttonsPanel.add(getInfoCargoButton);
+        buttonsPanel.add(exitButton);
+
+        // Response Text Area
+        responseTextArea = new JTextArea();
+        responseTextArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(responseTextArea);
+
+        // Add components to frame
+        frame.getContentPane().add(topPanel, BorderLayout.NORTH);
+        frame.getContentPane().add(commandPanel, BorderLayout.CENTER);
+        frame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
+        frame.getContentPane().add(scrollPane, BorderLayout.EAST); // Adjust this if needed
+
+        // Display the window
+        frame.pack(); // Adjusts window size to fit components
+        frame.setLocationRelativeTo(null); // Center the window
+        frame.setVisible(true);
+
+        // Erstelle einen Button zum Senden des Befehls
 
         sendButton.addActionListener(new ActionListener() {
             @Override
@@ -79,62 +99,36 @@ public class CompanyAppGUI {
             }
         });
 
-        register.addActionListener(new ActionListener() {
+        registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //add company in company database,
             }
         });
-        newCargo.addActionListener(new ActionListener() {
+        newCargoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //add cargo in cargo database?
             }
         });
 
-        getInfoCargo.addActionListener(new ActionListener() {
+        getInfoCargoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //print about cargos of all of that company?
             }
         });
 
-        exit.addActionListener(new ActionListener() {
+        exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //programm beenden!!!
             }
         });
 
-        // Erstelle ein Panel für die Befehlseingabe
-        JPanel inputPanel = new JPanel(new BorderLayout());
-        inputPanel.add(new JLabel("Enter command: "), BorderLayout.WEST);
-        inputPanel.add(commandTextField, BorderLayout.CENTER);
-        inputPanel.add(sendButton, BorderLayout.EAST);
-        inputPanel.add(getInfoHarbourButton,BorderLayout.EAST);
-        inputPanel.add(register,BorderLayout.EAST);
-        inputPanel.add(newCargo,BorderLayout.EAST);
-        inputPanel.add(getInfoCargo,BorderLayout.EAST);
-        inputPanel.add(exit,BorderLayout.EAST);
 
-        // Erstelle ein Textfeld für die Anzeige der Antworten
-        responseTextArea = new JTextArea();
-        responseTextArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(responseTextArea);
 
-        // Füge die Komponenten zum Hauptfenster hinzu
-        frame.getContentPane().add(inputPanel, BorderLayout.NORTH);
-        frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-        frame.getContentPane().add(scrollPaneServer,BorderLayout.CENTER);
-        frame.getContentPane().add(scrollPaneTopClient,BorderLayout.CENTER);
 
-        // Zentriere das Fenster auf dem Bildschirm
-        frame.setLocationRelativeTo(null);
-
-        // Zeige das Fenster an
-        frame.setVisible(true);
-
-        // kann sein, dass visible nicht richtig ist!
     }
 
     private void sendCommand(String command) {
@@ -153,12 +147,13 @@ public class CompanyAppGUI {
     }
 
     public static void main(String[] args) throws IOException {
-        CompanyApp companyApp = new CompanyApp(new Socket(), "TestCompany");
-        CompanyAppGUI companyAppGUI = new CompanyAppGUI();
-        companyAppGUI.start();
+     //   CompanyApp companyApp = new CompanyApp(new Socket(), "TestCompany");
+       // CompanyAppGUI companyAppGUI = new CompanyAppGUI();
+        //companyAppGUI.start();
+        SwingUtilities.invokeLater(() -> new CompanyAppGUI());
+
+
     }
 
-    private void start() {
-        new Thread(companyApp::run).start();
-    }
+
 }

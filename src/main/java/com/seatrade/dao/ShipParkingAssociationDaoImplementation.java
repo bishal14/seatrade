@@ -22,7 +22,6 @@ public class ShipParkingAssociationDaoImplementation implements GenericDAO<ShipH
 
         try {
             PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_SHIP_HARBOUR_ASSOCIATION);
-            preparedStatement.setInt(1, shipHarbourAssociation.getShipHarbourAssociationId());
             preparedStatement.setInt(2, shipHarbourAssociation.getFkShipId());
             preparedStatement.setInt(3, shipHarbourAssociation.getFkHarbourId());
 
@@ -37,7 +36,9 @@ public class ShipParkingAssociationDaoImplementation implements GenericDAO<ShipH
     public ShipHarbourAssociation update(ShipHarbourAssociation shipHarbourAssociation) {
         try{
         PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_SHIP_HARBOUR_ASSOCIATION);
-         preparedStatement.setInt(2, shipHarbourAssociation.getFkShipId());
+            preparedStatement.setInt(1, shipHarbourAssociation.getShipHarbourAssociationId());
+
+            preparedStatement.setInt(2, shipHarbourAssociation.getFkShipId());
         preparedStatement.setInt(3, shipHarbourAssociation.getFkHarbourId());
         preparedStatement.executeUpdate();
 
@@ -61,10 +62,11 @@ public class ShipParkingAssociationDaoImplementation implements GenericDAO<ShipH
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
+                int shipharbourid= resultSet.getInt(1);
                 int shipId= resultSet.getInt(2);
                 int harbourId = resultSet.getInt(3);
 
-                shipHarbourAssociation = new ShipHarbourAssociation(shipId,harbourId);
+                shipHarbourAssociation = new ShipHarbourAssociation(shipharbourid,shipId,harbourId);
             }
             return shipHarbourAssociation;
 
@@ -98,10 +100,9 @@ public class ShipParkingAssociationDaoImplementation implements GenericDAO<ShipH
 
             while (rs.next()){
                 int ship_harbour_id = rs.getInt(1);
-                int harbourId= rs.getInt(2);
-                int shipId=rs.getInt(3);
-                double value = rs.getDouble(4);
-                ShipHarbourAssociation shipHarbourAssociation = new ShipHarbourAssociation(ship_harbour_id,shipId,  harbourId);
+                int harbourId= rs.getInt(3);
+                int shipId=rs.getInt(2);
+                 ShipHarbourAssociation shipHarbourAssociation = new ShipHarbourAssociation(ship_harbour_id,shipId,  harbourId);
                 shipHarbourAssociations.add(shipHarbourAssociation);
 
             }

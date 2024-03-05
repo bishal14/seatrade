@@ -5,7 +5,7 @@ public class ShipHarbourAssociation {
     private int fkHarbourId;
     private int shipHarbourAssociationId;
 
-    public ShipHarbourAssociation(int fkShipId, int fkHarbourId, int shipHarbourAssociationId) {
+    public ShipHarbourAssociation( int shipHarbourAssociationId,int fkShipId, int fkHarbourId) {
         this.fkShipId = fkShipId;
         this.fkHarbourId = fkHarbourId;
         this.shipHarbourAssociationId = shipHarbourAssociationId;

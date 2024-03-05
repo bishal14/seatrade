@@ -4,6 +4,7 @@ import com.seatrade.dao.GenericDAO;
 import com.seatrade.entity.Harbour;
 import com.seatrade.util.database.DatabaseUtility;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,8 +22,12 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
     @Override
     public Harbour add(Harbour harbour) {
 
-        try {
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_HARBOUR);
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
+        try{
+            connection = DatabaseUtility.getConnection();
+              preparedStatement = connection.prepareStatement(INSERT_HARBOUR);
              preparedStatement.setString(2, harbour.getName());
             preparedStatement.setInt(3, harbour.getCellId());
 
@@ -30,13 +35,19 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
             return harbour;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
     }
 
     @Override
     public Harbour update(Harbour harbour) {
+
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
         try{
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_HARBOUR);
+              preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_HARBOUR);
             preparedStatement.setInt(1,harbour.getId());
             preparedStatement.setString(2,harbour.getName());
             preparedStatement.setInt(3,harbour.getCellId());
@@ -46,6 +57,8 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
             return  harbour;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
 
      }
@@ -55,8 +68,12 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
         String idString = id.toString();
         String findById= SELECT_HARBOUR_BY_ID.concat(idString);
         Harbour harbour = null;
-        try{
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(findById);
+
+            PreparedStatement preparedStatement = null;
+            Connection connection = null;
+            ResultSet resultSet = null;
+            try{
+              preparedStatement = DatabaseUtility.getConnection().prepareStatement(findById);
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()){
@@ -68,17 +85,25 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
             return harbour;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
      }
 
     @Override
     public void delete(Object id) {
-    try {
-        PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(DELETE_HARBOUR);
+
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
+        try{
+          preparedStatement = DatabaseUtility.getConnection().prepareStatement(DELETE_HARBOUR);
         preparedStatement.setInt(1,Integer.parseInt(id.toString()));
         preparedStatement.executeUpdate();
     } catch (SQLException e) {
         throw new RuntimeException(e);
+    }finally {
+        DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
     }
     }
 
@@ -86,8 +111,12 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
     public List<Harbour> listAll() {
 
         List<Harbour> harbours = new ArrayList<>();
+
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
         try{
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_HARBOUR);
+              preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_HARBOUR);
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()){
@@ -101,6 +130,8 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
             return harbours;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
      }
 }

@@ -4,6 +4,7 @@ import com.seatrade.entity.ShipHarbourAssociation;
 import com.seatrade.entity.TransportOrder;
 import com.seatrade.util.database.DatabaseUtility;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,8 +21,11 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
 
     @Override
     public TransportOrder add(TransportOrder transportOrder) {
-        try {
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_TRANSPORT_ORDER);
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
+        try{
+              preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_TRANSPORT_ORDER);
              preparedStatement.setInt(2, transportOrder.getForeignKeyCompanyId());
             preparedStatement.setInt(3, transportOrder.getForeignKeyShipId());
 
@@ -29,13 +33,18 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
             return transportOrder;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
     }
 
     @Override
     public TransportOrder update(TransportOrder transportOrder) {
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
         try{
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_TRANSPORT_ORDE);
+              preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_TRANSPORT_ORDE);
             preparedStatement.setInt(1, transportOrder.getTransportOrderId());
             preparedStatement.setInt(2, transportOrder.getForeignKeyCompanyId());
             preparedStatement.setInt(3, transportOrder.getForeignKeyShipId());
@@ -44,6 +53,8 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
             return  transportOrder;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
 
     }
@@ -53,10 +64,12 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
         TransportOrder transportOrder = null;
 
         String idString = SELECT_TRANSPORT_ORDE_BY_ID.concat(id.toString());
-
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
         try{
-            PreparedStatement preparedStatement= DatabaseUtility.getConnection().prepareStatement(idString);
-            ResultSet resultSet = preparedStatement.executeQuery();
+              preparedStatement= DatabaseUtility.getConnection().prepareStatement(idString);
+              resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
                 int transporterId=resultSet.getInt(1);
@@ -69,6 +82,8 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
     }
 
@@ -76,12 +91,17 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
     public void delete(Object id) {
         String idString = DELETE_TRANSPORT_ORDER.concat(id.toString());
 
-        try {
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(idString);
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
+        try{
+              preparedStatement = DatabaseUtility.getConnection().prepareStatement(idString);
             preparedStatement.setInt(1,Integer.parseInt(id.toString()));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
 
     }
@@ -89,10 +109,13 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
     @Override
     public List<TransportOrder> listAll() {
         List<TransportOrder> transportOrders = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet rs = null;
         try{
 
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_TRANSPORT_ORDER);
-            ResultSet rs =preparedStatement.executeQuery();
+              preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_TRANSPORT_ORDER);
+              rs =preparedStatement.executeQuery();
 
             while (rs.next()){
                 int transport_order_id= rs.getInt(1);
@@ -106,6 +129,8 @@ public class TransportOrderDaoImplementation implements GenericDAO<TransportOrde
             return transportOrders;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,rs);
         }
     }
 }

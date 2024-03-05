@@ -5,6 +5,7 @@ import com.seatrade.entity.Harbour;
 import com.seatrade.entity.Ship;
 import com.seatrade.util.database.DatabaseUtility;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,8 +22,11 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
 
     @Override
     public Ship add(Ship ship) {
-        try {
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_SHIP);
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
+        try{
+              preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_SHIP);
              preparedStatement.setString(2, ship.getName());
              preparedStatement.setInt(3,ship.getFkCompanyId());
             preparedStatement.setInt(4, ship.getCellId());
@@ -31,6 +35,8 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
             return ship;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
      }
 
@@ -38,8 +44,11 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
     public Ship update(Ship ship) {
 
 
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
         try{
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_SHIP);
+              preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_SHIP);
             preparedStatement.setInt(1,ship.getId());
             preparedStatement.setString(2,ship.getName());
             preparedStatement.setInt(3,ship.getFkCompanyId());
@@ -50,6 +59,8 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
             return  ship;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
 
     }
@@ -60,9 +71,12 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         String idString = id.toString();
         String findById= SELECT_SHIP_BY_ID.concat(idString);
         Ship ship= null;
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet rs = null;
         try{
-            PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(findById);
-            ResultSet rs = preparedStatement.executeQuery();
+              preparedStatement = DatabaseUtility.getConnection().prepareStatement(findById);
+              rs = preparedStatement.executeQuery();
 
             while (rs.next()){
                 int shipId= rs.getInt(1);
@@ -75,6 +89,8 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
             return ship;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,rs);
         }
 
     }
@@ -82,12 +98,17 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
     @Override
     public void delete(Object id) {
 
-        try {
-        PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(DELETE_SHIP);
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
+        try{
+          preparedStatement = DatabaseUtility.getConnection().prepareStatement(DELETE_SHIP);
         preparedStatement.setInt(1,Integer.parseInt(id.toString()));
         preparedStatement.executeUpdate();
         } catch (SQLException e) {
         throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
 
     }
@@ -95,10 +116,12 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
     @Override
     public List<Ship> listAll() {
         List<Ship> ships = new ArrayList<>();
-
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        ResultSet rs = null;
         try{
-        PreparedStatement preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_SHIP);
-        ResultSet rs = preparedStatement.executeQuery();
+          preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_SHIP);
+          rs = preparedStatement.executeQuery();
         while (rs.next()){
 
             int shipId= rs.getInt(1);
@@ -113,6 +136,8 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         return ships;
         } catch (SQLException e) {
         throw new RuntimeException(e);
+        }finally {
+            DatabaseUtility.closeResources(connection,preparedStatement,rs);
         }
         }
     }

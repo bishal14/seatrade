@@ -13,10 +13,10 @@ import java.util.List;
 public class CargoDaoImplementation implements GenericDAO<Cargo> {
     private static final String INSERT_CARGOS= "INSERT INTO cargo(sourceHarbour,destinationHarbour,value)    VALUES    (?,?,?);";
 
-     private static final String SELECT_CARGO_BY_ID="select * from cargo where cargoId='";
+     private static final String SELECT_CARGO_BY_ID="select * from cargo where cargoId=?";
     private static final String SELECT_ALL_CARGOS="select * from cargo";
-    private static final String DELETE_CARGOS="delete from cargo where cargoId='";
-    private static final String UPDATE_CARGO="update cargo set sourceHarbour=',destinationHarbour=', value=', where cargoId=' ";
+    private static final String DELETE_CARGOS="delete from cargo where cargoId=?";
+    private static final String UPDATE_CARGO="update cargo set sourceHarbour=?,destinationHarbour=?, value=? where cargoId=? ";
     @Override
     public Cargo add(Cargo cargo) {
         PreparedStatement preparedStatement = null;
@@ -26,9 +26,9 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
         try{
             connection = DatabaseUtility.getConnection();
             preparedStatement = connection.prepareStatement(INSERT_CARGOS);
-            preparedStatement.setString(2,cargo.getSourceHarbour());
-            preparedStatement.setString(3,cargo.getDestinationHarbour());
-            preparedStatement.setDouble(4,cargo.getValue());
+            preparedStatement.setString(1,cargo.getSourceHarbour());
+            preparedStatement.setString(2,cargo.getDestinationHarbour());
+            preparedStatement.setDouble(3,cargo.getValue());
 
             preparedStatement.executeUpdate();
             return cargo;
@@ -47,15 +47,15 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
         ResultSet resultSet = null;
     try{
         connection = DatabaseUtility.getConnection();
+        preparedStatement = connection.prepareStatement(UPDATE_CARGO); // This line was missing
 
-        preparedStatement = connection.prepareStatement(UPDATE_CARGO);
-        preparedStatement.setInt(1,cargo.getCargoId());
-        preparedStatement.setString(2,cargo.getSourceHarbour());
-        preparedStatement.setString(3,cargo.getDestinationHarbour());
-        preparedStatement.setDouble(4,cargo.getValue());
-
+        preparedStatement.setString(1, cargo.getSourceHarbour());
+        preparedStatement.setString(2, cargo.getDestinationHarbour());
+        preparedStatement.setDouble(3, cargo.getValue());
+        preparedStatement.setInt(4, cargo.getCargoId());
         preparedStatement.executeUpdate();
-        return cargo;
+
+         return cargo;
     }catch (SQLException e) {
         throw new RuntimeException(e);
     } finally {
@@ -70,25 +70,21 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
     public Cargo get(Object id) {
          Cargo cargo = null;
 
-        String idString = SELECT_CARGO_BY_ID.concat(id.toString());
-        PreparedStatement preparedStatement = null;
+         PreparedStatement preparedStatement = null;
         Connection connection = null;
         ResultSet resultSet = null;
         try{
             connection = DatabaseUtility.getConnection();
-
-              preparedStatement= connection.prepareStatement(idString);
-            preparedStatement.setInt(1,Integer.parseInt(id.toString()));
-              resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()){
-               String sourceHarbour= resultSet.getString(2);
-               String destinationHarbour = resultSet.getString(3);
-               double value = resultSet.getDouble(4);
-           //    int fkTransportOrderId= resultSet.getInt(5);
-             //  int fkShipId= resultSet.getInt(6);
-               cargo = new Cargo( sourceHarbour,destinationHarbour,value );
-             }
+            preparedStatement = connection.prepareStatement(SELECT_CARGO_BY_ID);
+            preparedStatement.setInt(1, Integer.parseInt(id.toString()));
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int cargoId = resultSet.getInt("cargoId");
+                String sourceHarbour = resultSet.getString("sourceHarbour");
+                String destinationHarbour = resultSet.getString("destinationHarbour");
+                double value = resultSet.getDouble("value");
+                cargo = new Cargo(cargoId, sourceHarbour, destinationHarbour, value);
+            }
             return cargo;
 
         } catch (SQLException e) {
@@ -134,12 +130,13 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
             resultSet =preparedStatement.executeQuery();
 
             while (resultSet.next()){
-                String sourceHarbour= resultSet.getString(2);
-                String destinationHarbour = resultSet.getString(3);
-                double value = resultSet.getDouble(4);
+                String sourceHarbour= resultSet.getString(1);
+                String destinationHarbour = resultSet.getString(2);
+                double value = resultSet.getDouble(3);
+                int cargoId=resultSet.getInt(4);
                 //    int fkTransportOrderId= resultSet.getInt(5);
                 //  int fkShipId= resultSet.getInt(6);
-                cargo = new Cargo( sourceHarbour,destinationHarbour,value );
+                cargo = new Cargo( cargoId,sourceHarbour,destinationHarbour,value );
                cargos.add(cargo);
 
             }

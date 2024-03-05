@@ -16,6 +16,22 @@ public class Cargo {
 		this.value = value;
 	}
 
+	public Cargo(int cargoId, String sourceHarbour, String destinationHarbour, double value) {
+		this.cargoId = cargoId;
+		this.sourceHarbour = sourceHarbour;
+		this.destinationHarbour = destinationHarbour;
+		this.value = value;
+	}
+
+	public Cargo(int cargoId, String sourceHarbour, String destinationHarbour, double value, int fkTransportId, int fkShipId) {
+		this.cargoId = cargoId;
+		this.sourceHarbour = sourceHarbour;
+		this.destinationHarbour = destinationHarbour;
+		this.value = value;
+		this.fkTransportId = fkTransportId;
+		this.fkShipId = fkShipId;
+	}
+
 	public int getCargoId() {
 		return cargoId;
 	}

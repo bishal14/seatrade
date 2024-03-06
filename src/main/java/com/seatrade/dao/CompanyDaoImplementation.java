@@ -54,6 +54,7 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
             preparedStatement.setInt(2,company.getCompanyId());
             preparedStatement.setDouble(3,company.getCompanyBalance());
 
+            preparedStatement.executeUpdate();
             return company;
         } catch (SQLException e) {
             throw new RuntimeException(e);

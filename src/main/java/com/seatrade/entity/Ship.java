@@ -2,40 +2,79 @@ package com.seatrade.entity;
 
 import com.seatrade.util.position.Position;
 import com.seatrade.util.position.RadarScreen;
-import com.seatrade.entity.Ship;
 
 import java.util.List;
 
 public class Ship {
 
-	private int id;
+	private int shipId;
+	private int xPosition;
+	private int yPosition;
+	private  String direction;
+	private  double cost;
 
 	private String name;
 	private int fkCompanyId;
-	private int cellId;
 
+	public Ship(int id, int xPosition, int yPosition, String direction, double cost, String name) {
+		this.shipId = id;
+		this.xPosition = xPosition;
+		this.yPosition = yPosition;
+		this.direction = direction;
+		this.cost = cost;
+		this.name = name;
+	}
+
+	public Ship(String name) {
+		this.name = name;
+		this.xPosition= 30;
+		this.yPosition= 5;
+		this.direction= "NONE";
+		this.cost=(int)(Math.random())*20000;
+	}
+
+	public int getxPosition() {
+		return xPosition;
+	}
+
+	public int getyPosition() {
+		return yPosition;
+	}
+
+	public String getDirection() {
+		return direction;
+	}
+
+	public double getCost() {
+		return cost;
+	}
+
+	public Ship(int id, int xPosition, int yPosition, String direction, double cost, String name, int fkCompanyId) {
+		this.shipId = id;
+		this.xPosition = xPosition;
+		this.yPosition = yPosition;
+		this.direction = direction;
+		this.cost = cost;
+		this.name = name;
+		this.fkCompanyId = fkCompanyId;
+	}
 	public int getFkCompanyId() {
 		return fkCompanyId;
 	}
-
-	private Position position;
-
-	public Ship(int id, String name,int fkCompanyId, int cellId) {
-		this.id = id;
+	public Ship(int id, String name, int fkCompanyId, int cellId) {
+		this.shipId = id;
 		this.fkCompanyId=fkCompanyId;
 		this.name = name;
-		this.cellId = cellId;
-	}
+ 	}
 
 	public Ship(String name,int fkCompanyId, int cellId) {
 		this.name = name;
 		this.fkCompanyId=fkCompanyId;
 
-		this.cellId = cellId;
-	}
+ 	}
 
-	public int getId() {
-		return id;
+	public int getShipId() {
+		return shipId;
 	}
 
 
@@ -43,13 +82,7 @@ public class Ship {
 		return name;
 	}
 
-	public int getCellId() {
-		return cellId;
-	}
 
-	public Position getPosition() {
-		return position;
-	}
 
 	public RadarScreen getRadar() {
 		return radar;

@@ -1,7 +1,5 @@
 package com.seatrade.dao;
 
-import com.seatrade.dao.GenericDAO;
-import com.seatrade.entity.Harbour;
 import com.seatrade.entity.Ship;
 import com.seatrade.util.database.DatabaseUtility;
 
@@ -14,11 +12,11 @@ import java.util.List;
 
 public class ShipDaoImplementation implements GenericDAO<Ship> {
 
-    private static final String INSERT_SHIP="INSERT INTO ship (ship_id,name,fk_company_id,cell_id) values (?,?,?)";
-    private static final String SELECT_SHIP_BY_ID="select ship_id,name,cell_id where id='";
+    private static final String INSERT_SHIP="INSERT INTO ship (name,xPosition,yPosition,direction,cost,fkCompanyId) values (?,?,?,?,?,?)";
+    private static final String SELECT_SHIP_BY_ID="select name,xPosition,yPosition,direction,cost,fkCompanyId from ship where  shipId=?";
     private static final String SELECT_ALL_SHIP  ="select * from ship";
-    private static final String DELETE_SHIP ="delete from ship where ship_id='";
-    private static final String UPDATE_SHIP="update ship set ship_id=',name=', cell_id='";
+    private static final String DELETE_SHIP ="delete from ship where shipId=?";
+    private static final String UPDATE_SHIP="update ship set name=?,xPosition=?,yPosition=?,direction=?,cost=? ,fkCompanyId=?  where  shipId=?";
 
     @Override
     public Ship add(Ship ship) {
@@ -26,12 +24,16 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         Connection connection = null;
         ResultSet resultSet = null;
         try{
-              preparedStatement = DatabaseUtility.getConnection().prepareStatement(INSERT_SHIP);
-             preparedStatement.setString(2, ship.getName());
-             preparedStatement.setInt(3,ship.getFkCompanyId());
-            preparedStatement.setInt(4, ship.getCellId());
+              connection = DatabaseUtility.getConnection();
+              preparedStatement = connection.prepareStatement(INSERT_SHIP);
+                preparedStatement.setString(1, ship.getName());
+                preparedStatement.setInt(2, ship.getxPosition());
+                preparedStatement.setInt(3, ship.getyPosition());
+                preparedStatement.setString(4, ship.getDirection());
+                preparedStatement.setDouble(5, ship.getCost());
+                preparedStatement.setInt(6, ship.getFkCompanyId());
 
-            preparedStatement.executeUpdate();
+                preparedStatement.executeUpdate();
             return ship;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -40,7 +42,7 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         }
      }
 
-    @Override
+        @Override
     public Ship update(Ship ship) {
 
 
@@ -48,11 +50,14 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         Connection connection = null;
         ResultSet resultSet = null;
         try{
-              preparedStatement = DatabaseUtility.getConnection().prepareStatement(UPDATE_SHIP);
-            preparedStatement.setInt(1,ship.getId());
-            preparedStatement.setString(2,ship.getName());
-            preparedStatement.setInt(3,ship.getFkCompanyId());
-            preparedStatement.setInt(4,ship.getCellId());
+            connection=DatabaseUtility.getConnection();
+              preparedStatement = connection.prepareStatement(UPDATE_SHIP);
+            preparedStatement.setString(1, ship.getName());
+            preparedStatement.setInt(2, ship.getxPosition());
+            preparedStatement.setInt(3, ship.getyPosition());
+            preparedStatement.setString(4, ship.getDirection());
+            preparedStatement.setDouble(5, ship.getCost());
+            preparedStatement.setInt(6, ship.getFkCompanyId());
 
             preparedStatement.executeUpdate();
 
@@ -75,16 +80,20 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         Connection connection = null;
         ResultSet rs = null;
         try{
-              preparedStatement = DatabaseUtility.getConnection().prepareStatement(findById);
+            connection = DatabaseUtility.getConnection();
+              preparedStatement = connection.prepareStatement(findById);
               rs = preparedStatement.executeQuery();
 
             while (rs.next()){
-                int shipId= rs.getInt(1);
-                String shipName=rs.getString(2);
-                int fkCompnayId=rs.getInt(3);
-                int cellId=rs.getInt(4);
+                String name=rs.getString(1);
+                int xPosition=rs.getInt(2);
+                int yPosition =rs.getInt(3);
+                String direction =rs.getString(4);
+                double cost =rs.getDouble(5);
+                int fkCompnayId = rs.getInt(6);
+                int shipId=rs.getInt(7);
 
-                ship = new Ship(shipId,shipName,fkCompnayId,cellId);
+                ship = new Ship(shipId,xPosition,yPosition,direction,cost,name,fkCompnayId);
             }
             return ship;
         } catch (SQLException e) {
@@ -102,7 +111,8 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         Connection connection = null;
         ResultSet resultSet = null;
         try{
-          preparedStatement = DatabaseUtility.getConnection().prepareStatement(DELETE_SHIP);
+            connection =DatabaseUtility.getConnection();
+          preparedStatement = connection.prepareStatement(DELETE_SHIP);
         preparedStatement.setInt(1,Integer.parseInt(id.toString()));
         preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -119,17 +129,22 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         PreparedStatement preparedStatement = null;
         Connection connection = null;
         ResultSet rs = null;
+        Ship ship = null;
         try{
-          preparedStatement = DatabaseUtility.getConnection().prepareStatement(SELECT_ALL_SHIP);
+            connection =DatabaseUtility.getConnection();
+          preparedStatement = connection.prepareStatement(SELECT_ALL_SHIP);
           rs = preparedStatement.executeQuery();
         while (rs.next()){
+            String name=rs.getString(1);
+            int xPosition=rs.getInt(2);
+            int yPosition =rs.getInt(3);
+            String direction =rs.getString(4);
+            double cost =rs.getDouble(5);
+            int fkCompnayId = rs.getInt(6);
+            int shipId=rs.getInt(7);
 
-            int shipId= rs.getInt(1);
-            String shipName=rs.getString(2);
-            int fkCompnayId=rs.getInt(3);
-            int cellId=rs.getInt(4);
+            ship = new Ship(shipId,xPosition,yPosition,direction,cost,name,fkCompnayId);
 
-            Ship ship = new Ship(shipId,shipName,fkCompnayId,cellId);
             ships.add(ship);
 
         }

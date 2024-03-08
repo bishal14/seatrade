@@ -14,11 +14,12 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
 
     private static final String INSERT_SHIP="INSERT INTO ship (name,xPosition,yPosition,direction,cost,fkCompanyId) values (?,?,?,?,?,?)";
     private static final String SELECT_SHIP_BY_ID="select name,xPosition,yPosition,direction,cost,fkCompanyId from ship where  shipId=?";
+    private static final String SELECT_SHIP_BY_NAME="select xPosition,yPosition,direction,cost,fkCompanyId,shipId from ship where  name=?";
     private static final String SELECT_ALL_SHIP  ="select * from ship";
     private static final String DELETE_SHIP ="delete from ship where shipId=?";
     private static final String UPDATE_SHIP="update ship set name=?,xPosition=?,yPosition=?,direction=?,cost=? ,fkCompanyId=?  where  shipId=?";
 
-    private static  final String SELECT_SHIP_BY_FKID="select * from Ship where fkCompanyId=?";
+    private static  final String SELECT_SHIP_BY_FKID= "SELECT name, xPosition, yPosition, direction, cost, fkCompanyId, shipId FROM ship WHERE fkCompanyId = ?";
 
 
     @Override
@@ -29,6 +30,9 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         try{
               connection = DatabaseUtility.getConnection();
               preparedStatement = connection.prepareStatement(INSERT_SHIP);
+              if(!isExisted(ship.getName())){
+
+
                 preparedStatement.setString(1, ship.getName());
                 preparedStatement.setInt(2, ship.getxPosition());
                 preparedStatement.setInt(3, ship.getyPosition());
@@ -36,7 +40,7 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
                 preparedStatement.setDouble(5, ship.getCost());
                 preparedStatement.setInt(6, ship.getFkCompanyId());
 
-                preparedStatement.executeUpdate();
+                preparedStatement.executeUpdate();}
             return ship;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -198,5 +202,65 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
             DatabaseUtility.closeResources(connection,preparedStatement,rs);
         }
         }
-    }
+
+     public boolean isExisted(String shipName) {
+          PreparedStatement preparedStatement = null;
+         Connection connection = null;
+         ResultSet rs = null;
+         try{
+             connection = DatabaseUtility.getConnection();
+             preparedStatement = connection.prepareStatement(SELECT_SHIP_BY_NAME);
+             preparedStatement.setString(1,shipName);
+             rs = preparedStatement.executeQuery();
+
+             while (rs.next()){
+                 String name=rs.getString(1);
+               if(name.equals(shipName)){
+                   return true;
+               }
+              }
+             return false;
+         } catch (SQLException e) {
+             throw new RuntimeException(e);
+         }finally {
+             DatabaseUtility.closeResources(connection,preparedStatement,rs);
+         }
+     }
+
+     public List<Ship> listByCompany(int id) throws SQLException {
+
+        List<Ship> ships = new ArrayList<>();
+        Ship ship = null;
+         PreparedStatement preparedStatement = null;
+         Connection connection = null;
+         ResultSet rs = null;
+         System.out.println("--company id is -->"+id );
+         try {
+             connection = DatabaseUtility.getConnection();
+             preparedStatement = connection.prepareStatement(SELECT_SHIP_BY_FKID);
+             preparedStatement.setInt(1, id);
+             rs = preparedStatement.executeQuery();
+
+             while (rs.next()){
+                 String name=rs.getString(1);
+                 int xPosition=rs.getInt(2);
+                 int yPosition =rs.getInt(3);
+                 String direction =rs.getString(4);
+                 double cost =rs.getDouble(5);
+                 int fkCompnayId = rs.getInt(6);
+                 int shipId=rs.getInt(7);
+
+                 ship = new Ship(shipId,xPosition,yPosition,direction,cost,name,fkCompnayId);
+
+                 ships.add(ship);
+
+             }
+             return ships;
+
+         } catch (SQLException e) {
+             throw new RuntimeException(e);
+         }
+
+     }
+}
 

@@ -14,4 +14,6 @@ public interface GenericDAO<T> {
 
     List<T> listAll() throws SQLException;
 
+
+
 }

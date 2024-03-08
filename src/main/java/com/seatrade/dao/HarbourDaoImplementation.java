@@ -135,8 +135,8 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
                 int yPosition =rs.getInt(3);
                 String direction =rs.getString(4);
                 String name = rs.getString(5);
-  Harbour harbour = new Harbour(xPosition,yPosition,direction,name,harbourID);
-            harbours.add(harbour);
+                Harbour harbour = new Harbour(xPosition,yPosition,direction,name,harbourID);
+                 harbours.add(harbour);
             }
             return harbours;
         } catch (SQLException e) {
@@ -145,4 +145,9 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
             DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
      }
+
+
+
+
+
 }

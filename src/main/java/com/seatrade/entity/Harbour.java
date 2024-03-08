@@ -1,8 +1,6 @@
 package com.seatrade.entity;
 
-import com.seatrade.Cell;
-import com.seatrade.Direction;
-
+import java.awt.*;
 import java.util.List;
 
 public class Harbour {

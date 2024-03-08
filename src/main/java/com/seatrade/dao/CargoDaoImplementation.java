@@ -147,4 +147,7 @@ public class CargoDaoImplementation implements GenericDAO<Cargo> {
             DatabaseUtility.closeResources(connection,preparedStatement,resultSet);
         }
     }
+
+
+
 }

@@ -1,9 +1,11 @@
 package com.seatrade;
 
 import com.seatrade.dao.CompanyDaoImplementation;
+import com.seatrade.dao.HarbourDaoImplementation;
 import com.seatrade.dao.ShipDaoImplementation;
 import com.seatrade.entity.Company;
 import com.seatrade.entity.CompanyApp;
+import com.seatrade.entity.Harbour;
 import com.seatrade.entity.Ship;
 
 import javax.swing.*;
@@ -19,7 +21,7 @@ import java.util.List;
 public class ShipAppGUI extends JFrame {
     private JTextArea responseTextArea;
 
-    public ShipAppGUI() {
+    public ShipAppGUI() throws SQLException {
         // Erstelle das Hauptfenster
         JFrame frame = new JFrame("ShipApp");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,20 +33,13 @@ public class ShipAppGUI extends JFrame {
         JLabel companyNameLabel = new JLabel("Company Name: ");
 
         // Server and Client Lists
-        String[] serverArray = {"Sea Trade", "CompanyApp"};
-        String[] clientArray = {"Sea Trade", "CompanyApp"};
-        JList<String> serverList = new JList<>(serverArray);
-        JList<String> clientList = new JList<>(clientArray);
-        JScrollPane scrollPaneServer = new JScrollPane(serverList);
-        JScrollPane scrollPaneClient = new JScrollPane(clientList);
+
 
         // Top panel for labels and lists
         JPanel topPanel = new JPanel();
         topPanel.add(serverLabel);
-        topPanel.add(scrollPaneServer);
-        topPanel.add(clientLabel);
-        topPanel.add(scrollPaneClient);
-        topPanel.add(companyNameLabel);
+         topPanel.add(clientLabel);
+         topPanel.add(companyNameLabel);
 
         // Command Input Panel
         JTextField commandTextField = new JTextField(20);
@@ -74,8 +69,10 @@ public class ShipAppGUI extends JFrame {
         responseTextArea = new JTextArea();
         responseTextArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(responseTextArea);
+        JPanel comboPanel = updateShipComboBoxes();
 
         // Add components to frame
+        frame.getContentPane().add(comboPanel,BorderLayout.WEST);
         frame.getContentPane().add(topPanel, BorderLayout.NORTH);
         frame.getContentPane().add(commandPanel, BorderLayout.CENTER);
         frame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
@@ -167,38 +164,100 @@ public class ShipAppGUI extends JFrame {
     }
 
     public static void main(String[] args) throws IOException {
-        SwingUtilities.invokeLater(() -> new ShipAppGUI());
-    }
-
-    public void updateShipComboBoxes() {
-        JComboBox<Company> companyComboBox = new JComboBox<>();
-        JComboBox<Ship> shipComboBox = new JComboBox<>();
-        CompanyDaoImplementation companyDaoImplementation = new CompanyDaoImplementation();
-        ShipDaoImplementation shipDaoImplementation = new ShipDaoImplementation();
-        // ActionListener zum Befüllen der shipComboBox basierend auf der Auswahl in companyComboBox
-        companyComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Company selectedCompany = (Company) companyComboBox.getSelectedItem();
-                if (selectedCompany != null) {
-                    List<Ship> ships = shipDaoImplementation.getShipsByCompanyId(selectedCompany.getCompanyId());
-                    shipComboBox.removeAllItems(); // Entferne vorherige Einträge
-                    for (Ship ship : ships) {
-                        shipComboBox.addItem(ship);
-                    }
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new ShipAppGUI();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         });
     }
 
-    public void updateCompanyComboBox(){
-        JComboBox<Company> companyComboBox = new JComboBox<>();
-        JComboBox<Ship> shipComboBox = new JComboBox<>();
+    public JPanel updateShipComboBoxes() {
+        JPanel panel = new JPanel();
+
+        JLabel companyList = new JLabel("Company Names");
+        JLabel shipList = new JLabel("Ship Names");
+        JLabel harbourList = new JLabel("Harbour Names");
         CompanyDaoImplementation companyDaoImplementation = new CompanyDaoImplementation();
         ShipDaoImplementation shipDaoImplementation = new ShipDaoImplementation();
+        HarbourDaoImplementation harbourDaoImplementation = new HarbourDaoImplementation();
 
-// ActionListener für den launchCompanyHarbourButton
+        JComboBox<String> companyComboBox = new JComboBox<>();
+        JComboBox<String> shipComboBox = new JComboBox<>();
+        JComboBox<String> harbourCombobox = new JComboBox<>();
+        List<Company> companies = null;
+        Map<String, Integer> companyNameToIdMap = new HashMap<>();
+
+        // Populate companyComboBox
+        try {
+              companies = companyDaoImplementation.listAll();
+            for (Company company : companies) {
+
+                companyComboBox.addItem(company.getName());
+                companyNameToIdMap.put(company.getName(),company.getCompanyId());
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Consider better error handling here
+        }
+        companies.forEach(company -> System.out.println(company.getName() + " -> " + company.getCompanyId()));
+
+        // Populate shipComboBox
+        List<Ship> ships = shipDaoImplementation.listAll();
+        for (Ship ship : ships) {
+            shipComboBox.addItem(ship.getName());
+        }
+
+
+        List<Harbour> harbours= harbourDaoImplementation.listAll();
+        System.out.println("size is ---> "+harbours.size());
+        for (Harbour harbour:harbours){
+            harbourCombobox.addItem(harbour.getName());
+        }
+
+
+        companyComboBox.addActionListener(e -> {
+
+            shipComboBox.removeAllItems();
+            String selectedCompanyName = (String) companyComboBox.getSelectedItem();
+            if (selectedCompanyName != null) {
+                Integer companyId = companyNameToIdMap.get(selectedCompanyName);
+                if (companyId != null) {
+                    try {
+                        List<Ship> shipsUpdated = shipDaoImplementation.listByCompany(companyId);
+                        for (Ship ship : shipsUpdated) {
+                            shipComboBox.addItem(ship.getName());
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace(); // Consider better error handling here
+                    }
+                } else {
+                    System.out.println("No mapping found for selected company name: " + selectedCompanyName);
+                }
+            }
+        });
+        panel.add(companyList);
+        panel.add(companyComboBox);
+
+        panel.add(shipList);
+        panel.add(shipComboBox);
+
+        panel.add(harbourList);
+        panel.add(harbourCombobox);
+
+        return panel;
+    }
+
+
+    public List<Ship> updateShipComboBox(Company company){
+        int id =company.getCompanyId();
+        ShipDaoImplementation shipDaoImplementation = new ShipDaoImplementation();
+        List<Ship> ships = shipDaoImplementation.getShipsByCompanyId(id);
+        return ships;
+
 
     }
+
 
 }

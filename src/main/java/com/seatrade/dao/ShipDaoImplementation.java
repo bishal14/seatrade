@@ -18,6 +18,9 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
     private static final String DELETE_SHIP ="delete from ship where shipId=?";
     private static final String UPDATE_SHIP="update ship set name=?,xPosition=?,yPosition=?,direction=?,cost=? ,fkCompanyId=?  where  shipId=?";
 
+    private static  final String SELECT_SHIP_BY_FKID="select * from Ship where fkCompanyId=?";
+
+
     @Override
     public Ship add(Ship ship) {
         PreparedStatement preparedStatement = null;
@@ -82,6 +85,7 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         try{
             connection = DatabaseUtility.getConnection();
               preparedStatement = connection.prepareStatement(findById);
+
               rs = preparedStatement.executeQuery();
 
             while (rs.next()){
@@ -101,6 +105,45 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
         }finally {
             DatabaseUtility.closeResources(connection,preparedStatement,rs);
         }
+
+    }
+
+
+    public List<Ship> getShipsByCompanyId(int companyFkID){
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        List<Ship> ships = new ArrayList<>();
+        Ship ship = null;
+        ResultSet rs =null;
+          try{
+            connection = DatabaseUtility.getConnection();
+            preparedStatement = connection.prepareStatement(SELECT_SHIP_BY_FKID);
+            preparedStatement.setInt(6,companyFkID);
+            rs = preparedStatement.executeQuery();
+
+            while (rs.next()){
+
+                String name=rs.getString(1);
+                int xPosition=rs.getInt(2);
+                int yPosition =rs.getInt(3);
+                String direction =rs.getString(4);
+                double cost =rs.getDouble(5);
+                int fkCompnayId = rs.getInt(6);
+                int shipId=rs.getInt(7);
+
+                ship = new Ship(shipId,xPosition,yPosition,direction,cost,name,fkCompnayId);
+            ships.add(ship);
+            }
+
+              return ships;
+
+
+        } catch (SQLException e) {
+              throw new RuntimeException(e);
+          }finally {
+              DatabaseUtility.closeResources(connection,preparedStatement,rs);
+          }
+
 
     }
 

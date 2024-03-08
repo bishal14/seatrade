@@ -130,11 +130,12 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()){
-                int xPosition= rs.getInt(1);
-                int yPosition =rs.getInt(2);
-                String direction =rs.getString(3);
-                String name = rs.getString(4);
-  Harbour harbour = new Harbour(xPosition,yPosition,direction,name);
+                int harbourID = rs.getInt(1);
+                int xPosition= rs.getInt(2);
+                int yPosition =rs.getInt(3);
+                String direction =rs.getString(4);
+                String name = rs.getString(5);
+  Harbour harbour = new Harbour(xPosition,yPosition,direction,name,harbourID);
             harbours.add(harbour);
             }
             return harbours;

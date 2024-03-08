@@ -1,7 +1,9 @@
 package com.seatrade;
 
+import com.seatrade.dao.CargoDaoImplementation;
 import com.seatrade.dao.CompanyDaoImplementation;
 import com.seatrade.dao.HarbourDaoImplementation;
+import com.seatrade.entity.Cargo;
 import com.seatrade.entity.Company;
 import com.seatrade.entity.CompanyApp;
 import com.seatrade.entity.Harbour;
@@ -110,7 +112,7 @@ public class CompanyAppGUI {
         getInfoHarbourButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // command send??
+                showHarbourList();
              }
         });
 
@@ -120,30 +122,51 @@ public class CompanyAppGUI {
                 String companyName = "Example Company"; // Replace this with actual company name retrieval logic, if necessary.
                 Company company = new Company(companyName);
                  // This line displays the dialog.
-                /*
-                    Harbour harbour1 = new Harbour(25, 9, "NONE", "lissabon");
-                    Harbour harbour2 = new Harbour(24, 16, "NONE", "dakar");
-                    Harbour harbour3 = new Harbour(29, 13, "NONE", "algier");
-                    Harbour harbour4 = new Harbour(29, 18, "NONE", "cotonau");
-                    Harbour harbour5 = new Harbour(2, 3, "NONE", "halifax");
-                    Harbour harbour6 = new Harbour(29, 0, "NONE", "plymouth");
-                    Harbour harbour7 = new Harbour(28, 5, "NONE", "brest");
-                    Harbour harbour8 = new Harbour(0, 10, "NONE", "ney york");
-                    Harbour harbour9 = new Harbour(2, 18, "NONE", "carracas");
 
-                    HarbourDaoImplementation harbourDaoImplementation = new HarbourDaoImplementation();
-                    harbourDaoImplementation.add(harbour1);
-                    harbourDaoImplementation.add(harbour2);
-                    harbourDaoImplementation.add(harbour3);
-                    harbourDaoImplementation.add(harbour4);
-                    harbourDaoImplementation.add(harbour5);
-                    harbourDaoImplementation.add(harbour6);
-                    harbourDaoImplementation.add(harbour7);
-                    harbourDaoImplementation.add(harbour8);
-                    harbourDaoImplementation.add(harbour9);
-                    JOptionPane.showMessageDialog(null, "Company with name " + companyName + " with default size, width, height, and deposit is registered.", "Registration Successful", JOptionPane.INFORMATION_MESSAGE);
-                */
-                showHarbourList();
+                JFrame frame = new JFrame("Company Register");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(300, 400);
+
+                // Server and Client Labels
+                JLabel name = new JLabel("Company Name: ");
+                JTextField companyNameTextfield = new JTextField(30);
+                JButton registerButton = new JButton("Register");
+
+
+                JPanel panel = new JPanel();
+                panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+
+                // Füge einige Komponenten hinzu
+                panel.add( name);
+                panel.add(Box.createRigidArea(new Dimension(5, 0))); // Füge einen Abstand zwischen den Buttons hinzu
+                panel.add( companyNameTextfield);
+                panel.add(Box.createHorizontalGlue()); // Füge elastischen Platz hinzu
+                panel.add(registerButton);
+
+                // Füge das Panel zum Fenster hinzu und zeige es an
+                frame.add(panel);
+                frame.pack();
+                frame.setLocationRelativeTo(null); // Zentriere das Fenster
+                frame.setVisible(true);
+
+                registerButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String companyName = companyNameTextfield.getText().toString();
+                        Company newCompany = new Company(companyName);
+
+
+                        CompanyDaoImplementation companyDaoImplementation = new CompanyDaoImplementation();
+                        companyDaoImplementation.add(newCompany);
+
+                        JOptionPane.showMessageDialog(null, "Cargo with name " + companyName + " with default size, width, height, and deposit is registered.", "Registration Successful", JOptionPane.INFORMATION_MESSAGE);
+                        frame.dispose();
+
+
+                    }
+                });
+
+
             }
 
         });
@@ -151,6 +174,7 @@ public class CompanyAppGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //add cargo in cargo database?
+                showHarbourList();
             }
         });
 
@@ -158,6 +182,7 @@ public class CompanyAppGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //print about cargos of all of that company?
+                showCargoList();
             }
         });
 
@@ -165,6 +190,9 @@ public class CompanyAppGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //programm beenden!!!
+                //TO-DO socket close and program stop.
+                frame.dispose();
+
             }
         });
 
@@ -225,4 +253,30 @@ public class CompanyAppGUI {
         // Display the table within a JOptionPane dialog
         JOptionPane.showMessageDialog(null, scrollPane, "List of Harbours", JOptionPane.INFORMATION_MESSAGE);
     }
+
+    public void showCargoList(){
+        CargoDaoImplementation cargoDaoImplementation = new CargoDaoImplementation();
+        List<Cargo> cargos = cargoDaoImplementation.listAll();
+
+        System.out.println("size of cargos ist "+ cargos.size());
+
+        String [] columnNames= {"sourceHarbour","destinationHarbour","value","cargoId"};
+
+        DefaultTableModel model = new DefaultTableModel(columnNames,0);
+
+        for(Cargo cargo:cargos){
+            model.addRow(new Object[]{cargo.getSourceHarbour(),cargo.getDestinationHarbour(),cargo.getValue(),cargo.getCargoId()});
+        }
+
+        JTable table = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        JOptionPane.showMessageDialog(null,scrollPane,"List of cargos",JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    //ship app, sea trade
+    //lauch, then ship added with company at company position??
+    //movetoharobur
+    //unload cargo, company balance erhöht und loss aktualisieren!
+
 }

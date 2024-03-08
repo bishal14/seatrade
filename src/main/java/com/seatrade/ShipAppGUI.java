@@ -1,6 +1,10 @@
 package com.seatrade;
 
+import com.seatrade.dao.CompanyDaoImplementation;
+import com.seatrade.dao.ShipDaoImplementation;
+import com.seatrade.entity.Company;
 import com.seatrade.entity.CompanyApp;
+import com.seatrade.entity.Ship;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,6 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.SQLException;
+import  java.util.*;
+import java.util.List;
 
 public class ShipAppGUI extends JFrame {
     private JTextArea responseTextArea;
@@ -87,6 +94,7 @@ public class ShipAppGUI extends JFrame {
             }
         });
 
+
         moveToButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -113,13 +121,39 @@ public class ShipAppGUI extends JFrame {
                 //
             }
         });
-        launchCompanyHarbourButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //
-            }
-        });
-    }
+
+        //create diaglog, where company is echtzeit in list addiert
+        //on clicking launch, it should open dialog with company, harbour list and  details for ship
+        // after clicking lauch, it should be created on hafen with dir and cost
+
+
+        //with company, there should be list of ships also available and move to button should reach to harbour
+        // if harbour x,y position is equal to ship position,then it is reached
+        //loadcargo, can only be done,if it is in hafen. otherweise fehler meldung
+        //after cargo is loaded, it should print quittung der erfolgreich ladung
+        //unloaded cargo must update balance of company
+
+            launchCompanyHarbourButton.addActionListener(new ActionListener() {
+                JComboBox<Company> companyComboBox = new JComboBox<>();
+                JComboBox<Ship> shipComboBox = new JComboBox<>();
+                CompanyDaoImplementation companyDaoImplementation = new CompanyDaoImplementation();
+                ShipDaoImplementation shipDaoImplementation = new ShipDaoImplementation();
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    CompanyDaoImplementation companyDaoImplementation = new CompanyDaoImplementation();
+                    try {
+                        List<Company> companyList = companyDaoImplementation.listAll();
+                        companyComboBox.removeAllItems(); // Entferne vorherige Einträge
+                        for (Company company : companyList) {
+                            companyComboBox.addItem(company);
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace(); // Oder zeige eine Fehlermeldung an
+                    }
+                }
+            });
+
+        }
     
 
     private void sendCommand(String command) {
@@ -135,4 +169,36 @@ public class ShipAppGUI extends JFrame {
     public static void main(String[] args) throws IOException {
         SwingUtilities.invokeLater(() -> new ShipAppGUI());
     }
+
+    public void updateShipComboBoxes() {
+        JComboBox<Company> companyComboBox = new JComboBox<>();
+        JComboBox<Ship> shipComboBox = new JComboBox<>();
+        CompanyDaoImplementation companyDaoImplementation = new CompanyDaoImplementation();
+        ShipDaoImplementation shipDaoImplementation = new ShipDaoImplementation();
+        // ActionListener zum Befüllen der shipComboBox basierend auf der Auswahl in companyComboBox
+        companyComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Company selectedCompany = (Company) companyComboBox.getSelectedItem();
+                if (selectedCompany != null) {
+                    List<Ship> ships = shipDaoImplementation.getShipsByCompanyId(selectedCompany.getCompanyId());
+                    shipComboBox.removeAllItems(); // Entferne vorherige Einträge
+                    for (Ship ship : ships) {
+                        shipComboBox.addItem(ship);
+                    }
+                }
+            }
+        });
+    }
+
+    public void updateCompanyComboBox(){
+        JComboBox<Company> companyComboBox = new JComboBox<>();
+        JComboBox<Ship> shipComboBox = new JComboBox<>();
+        CompanyDaoImplementation companyDaoImplementation = new CompanyDaoImplementation();
+        ShipDaoImplementation shipDaoImplementation = new ShipDaoImplementation();
+
+// ActionListener für den launchCompanyHarbourButton
+
+    }
+
 }

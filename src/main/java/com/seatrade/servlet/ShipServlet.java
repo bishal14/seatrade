@@ -1,2 +1,4 @@
-package com.seatrade.servlet;public class ShipServlet {
+package com.seatrade.servlet;
+
+public class ShipServlet {
 }

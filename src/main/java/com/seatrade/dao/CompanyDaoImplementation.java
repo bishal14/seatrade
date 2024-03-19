@@ -138,7 +138,7 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
             int id = rs.getInt(5);
             double balance = rs.getDouble(4);
             Company company = new Company(name,id,balance);
-            System.out.println("id is "+id);
+            System.out.println("----id is---- "+id);
             companies.add(company);
 
         }

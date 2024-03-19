@@ -58,6 +58,17 @@ public class Ship {
 		this.name = name;
 		this.fkCompanyId = fkCompanyId;
 	}
+
+	public Ship(int xPosition, int yPosition, String direction, double cost, String name, int fkCompanyId) {
+		this.xPosition = xPosition;
+		this.yPosition = yPosition;
+		this.direction = direction;
+		this.cost = cost;
+		this.name = name;
+		this.fkCompanyId = fkCompanyId;
+
+	}
+
 	public int getFkCompanyId() {
 		return fkCompanyId;
 	}

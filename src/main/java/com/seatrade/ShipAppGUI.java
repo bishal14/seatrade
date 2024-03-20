@@ -1,8 +1,10 @@
 package com.seatrade;
 
+import com.seatrade.dao.CargoDaoImplementation;
 import com.seatrade.dao.CompanyDaoImplementation;
 import com.seatrade.dao.HarbourDaoImplementation;
 import com.seatrade.dao.ShipDaoImplementation;
+import com.seatrade.entity.Cargo;
 import com.seatrade.entity.Company;
 import com.seatrade.entity.Harbour;
 import com.seatrade.entity.Ship;
@@ -70,16 +72,24 @@ public class ShipAppGUI extends JFrame {
         JLabel companyList = new JLabel("Server Company Names");
         JLabel shipList = new JLabel("Client Ship Names");
         JLabel harbourList = new JLabel("Harbour Names");
+        JLabel cargoList = new JLabel("Cargos");
         CompanyDaoImplementation companyDaoImplementation = new CompanyDaoImplementation();
         ShipDaoImplementation shipDaoImplementation = new ShipDaoImplementation();
         HarbourDaoImplementation harbourDaoImplementation = new HarbourDaoImplementation();
+        CargoDaoImplementation cargoDaoImplementation = new CargoDaoImplementation();
 
         JComboBox<String> companyComboBox = new JComboBox<>();
         JComboBox<String> shipComboBox = new JComboBox<>();
         JComboBox<String> harbourCombobox = new JComboBox<>();
+        JComboBox<Integer> cargoComboBox = new JComboBox<>();
+
+
         List<Company> companies = companyDaoImplementation.listAll();
 
+
         Map<String, Integer> companyNameToIdMap = new HashMap<>();
+        Map<String, Integer> harbourNameToIdMap = new HashMap<>();
+
 
         // Populate companyComboBox
         for (Company company : companies) {
@@ -88,7 +98,9 @@ public class ShipAppGUI extends JFrame {
             companyNameToIdMap.put(company.getName(), company.getCompanyId());
 
         }
-        companies.forEach(company -> System.out.println(company.getName() + " -> " + company.getCompanyId()));
+
+
+         companies.forEach(company -> System.out.println(company.getName() + " -> " + company.getCompanyId()));
 
         // Populate shipComboBox
         List<Ship> ships = shipDaoImplementation.listAll();
@@ -100,8 +112,13 @@ public class ShipAppGUI extends JFrame {
         List<Harbour> harbours = harbourDaoImplementation.listAll();
         for (Harbour harbour : harbours) {
             harbourCombobox.addItem(harbour.getName());
+            harbourNameToIdMap.put(harbour.getName(),harbour.getId());
         }
 
+        List<Cargo> cargos = cargoDaoImplementation.listAll();
+        for(Cargo cargo:cargos){
+            cargoComboBox.addItem(cargo.getCargoId());
+         }
 
         companyComboBox.addActionListener(e -> {
 
@@ -123,6 +140,35 @@ public class ShipAppGUI extends JFrame {
                 }
             }
         });
+
+
+        harbourCombobox.addActionListener(e -> {
+            cargoComboBox.removeAllItems();
+            String selectedHarbourName= harbourCombobox.getSelectedItem().toString();
+             if(selectedHarbourName!=null){
+                 System.out.println();
+
+                Integer harbourId = harbourNameToIdMap.get(selectedHarbourName);
+                int id = (int )harbourId;
+                 if(harbourId != null){
+                    try {
+
+                        List<Cargo> cargoUpdated =   cargoDaoImplementation.listByHarnbourNameS(id);
+                        System.out.println("cargo size  is "+cargoUpdated.size());
+
+                        for(Cargo cargo:cargoUpdated) {
+                        cargoComboBox.addItem(cargo.getCargoId());
+                        System.out.println("cargoid is "+cargo.getCargoId());
+
+                    } } catch (SQLException ex) {
+                    ex.printStackTrace();
+
+                }
+                }else{
+              JOptionPane.showMessageDialog(null,"No Matching found for selected Harbour Name: "+ selectedHarbourName);
+                }
+            }
+        });
         panel.add(companyList);
         panel.add(companyComboBox);
 
@@ -131,6 +177,9 @@ public class ShipAppGUI extends JFrame {
 
         panel.add(harbourList);
         panel.add(harbourCombobox);
+
+        panel.add(cargoList);
+        panel.add(cargoComboBox);
 
         // Add components to frame
         frame.getContentPane().add(panel, BorderLayout.WEST);
@@ -146,24 +195,14 @@ public class ShipAppGUI extends JFrame {
 
         launchCompanyHarbourButton.addActionListener(new ActionListener() {
 
-
-
-
-
-
-
-
-
-
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 try {
                     String direction ="NONE";
                     double cost =300;
                     String companySelectedName= companyComboBox.getSelectedItem().toString();
                     Company companySelected = iterateListCompanies(companies,companySelectedName);
-                    int companyId=companySelected.getCompanyId();
+                    int companyId = companySelected.getCompanyId();
                     System.out.println("company selected name is --->"+companySelectedName);
 
                     String SelectedName= harbourCombobox.getSelectedItem().toString();
@@ -173,7 +212,7 @@ public class ShipAppGUI extends JFrame {
                     String shipName = shipNameTextfield.getText().toString();
                     System.out.println("shipname in textfield is "+shipName);
 
-                     Ship shipToAdd= new Ship(xHarbourPosition,yHarbourPosition,direction,cost, shipName,companyId);
+                    Ship shipToAdd= new Ship(xHarbourPosition,yHarbourPosition,direction,cost, shipName,companyId);
 
                     shipDaoImplementation.add(shipToAdd);
                 } catch (Exception ex) {
@@ -186,11 +225,36 @@ public class ShipAppGUI extends JFrame {
         unloadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "cargo is unloaded!");
-/               /**
+                /**
                  unload cargo button check before, if the ship is loaded or not.
                  if s,then unload and update, else throw error!
+                 if ship is at destination harbour,then checks position, and if loaded, then unloaded
                  */
+               String shipName= giveCurrentNameOfComboBox(shipComboBox);
+               Ship ship = shipDaoImplementation.getShipByName(shipName);
+
+               String harbourName = giveCurrentNameOfComboBox(harbourCombobox);
+               Harbour harbour = harbourDaoImplementation.getHarbourByName(harbourName);
+
+               String companyName = giveCurrentNameOfComboBox(companyComboBox);
+               Company company =companyDaoImplementation.getCompanyByName(companyName);
+               double balance = company.getCompanyBalance();
+//
+                boolean condition = isShipHarbourArrived(ship,harbour);
+                if( harbour.isFree()&&condition==true ){
+
+                    ship.unloadCargo();
+
+                        balance += ship.getCargo().getValue();
+
+                        company.setCompanyBalance(balance);
+                    /**
+                     *  if harbour is not full, then unload, otherwise wait.
+                      */
+                } else {
+                     ship.setState(ShipState.WAIT);
+                    JOptionPane.showMessageDialog(null,"Harbour is not free now! ");
+                }
             }
         });
 
@@ -198,21 +262,47 @@ public class ShipAppGUI extends JFrame {
 
 
         moveToButton.addActionListener(new ActionListener() {
+            String shipName= giveCurrentNameOfComboBox(shipComboBox);
+            Ship ship = shipDaoImplementation.getShipByName(shipName);
+
+            String harbourName = giveCurrentNameOfComboBox(harbourCombobox);
+            Harbour destinationHarbour = harbourDaoImplementation.getHarbourByName(harbourName);
+
+            String companyName = giveCurrentNameOfComboBox(companyComboBox);
+            Company company =companyDaoImplementation.getCompanyByName(companyName);
+
+            boolean shipWaitState= isShipHarbourArrived(ship, destinationHarbour);
             @Override
             public void actionPerformed(ActionEvent e) {
-                //
-                String harbourName = "Example Harbour"; // Replace this with actual company name retrieval logic, if necessary.
+                //If ship is parket at harbour, then it can move. it can move to other harbour only.
+
+                if(shipWaitState && ship.checkFromToHarbour(ship.getHarbour(), destinationHarbour) ){
+                    ship.setState(ShipState.MOVING);
+                }
+
+
 
                 // if position of harbour and ship is same,
-                JOptionPane.showMessageDialog(null, "ship is arrived at " + harbourName);
-            }
+             }
 
         });
 
         loadButton.addActionListener(new ActionListener() {
+
+            String shipName= giveCurrentNameOfComboBox(shipComboBox);
+            Ship ship = shipDaoImplementation.getShipByName(shipName);
+
+            String harbourName = giveCurrentNameOfComboBox(harbourCombobox);
+            Harbour harbour = harbourDaoImplementation.getHarbourByName(harbourName);
+
+            String companyName = giveCurrentNameOfComboBox(companyComboBox);
+            Company company =companyDaoImplementation.getCompanyByName(companyName);
+
+
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "cargo is loaded");
+
 
             }
         });
@@ -314,6 +404,33 @@ public class ShipAppGUI extends JFrame {
         }
         return harbour;
     }
+
+    private  String giveCurrentNameOfComboBox(JComboBox<String> comboBox){
+        String string = comboBox.getSelectedItem().toString();
+        return string;
+    }
+
+    private boolean isShipHarbourArrived(Ship ship, Harbour harbour){
+
+        if(ship.getxPosition()==harbour.getxPosition() && ship.getyPosition()==harbour.getyPosition()){
+            JOptionPane.showMessageDialog(null,"Ziel Hafen reached!");
+            ship.setState(ShipState.WAIT);
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

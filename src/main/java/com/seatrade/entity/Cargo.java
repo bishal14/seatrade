@@ -10,17 +10,20 @@ public class Cargo {
 	private int fkTransportId;
 	private int fkShipId;
 
+	private  int fkSourceHarbourId;
+
 	public Cargo(String sourceHarbour, String destinationHarbour, double value) {
 		this.sourceHarbour = sourceHarbour;
 		this.destinationHarbour = destinationHarbour;
 		this.value = value;
 	}
 
-	public Cargo(int cargoId, String sourceHarbour, String destinationHarbour, double value) {
+	public Cargo(String sourceHarbour, String destinationHarbour,double value,int fkSourceHarbourId, int cargoId) {
 		this.cargoId = cargoId;
 		this.sourceHarbour = sourceHarbour;
 		this.destinationHarbour = destinationHarbour;
 		this.value = value;
+		this.fkSourceHarbourId = fkSourceHarbourId;
 	}
 
 	public Cargo(int cargoId, String sourceHarbour, String destinationHarbour, double value, int fkTransportId, int fkShipId) {
@@ -50,6 +53,14 @@ public class Cargo {
 
 	public int getFkTransportId() {
 		return fkTransportId;
+	}
+
+	public int getFkSourceHarbourId() {
+		return fkSourceHarbourId;
+	}
+
+	public void setFkSourceHarbourId(int fkSourceHarbourId) {
+		this.fkSourceHarbourId = fkSourceHarbourId;
 	}
 
 	public int getFkShipId() {

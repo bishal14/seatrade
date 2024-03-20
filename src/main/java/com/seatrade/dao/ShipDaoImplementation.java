@@ -262,5 +262,18 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
          }
 
      }
+
+
+
+    public Ship getShipByName(String name){
+        List<Ship> ships = listAll();
+
+        for(Ship ship: ships){
+            if(ship.getName().toLowerCase().equals(name.toLowerCase())){
+                return  ship;
+            }
+        }
+      throw  new RuntimeException("No Ship with name "+ name+ "is registered!");
+     }
 }
 

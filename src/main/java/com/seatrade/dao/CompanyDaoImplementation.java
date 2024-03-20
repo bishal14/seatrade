@@ -123,7 +123,7 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
 
 
     @Override
-    public List<Company> listAll() throws SQLException {
+    public List<Company> listAll()  {
         List<Company> companies = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         Connection connection = null;
@@ -172,5 +172,16 @@ public class CompanyDaoImplementation implements GenericDAO<Company> {
         }finally {
             DatabaseUtility.closeResources(connection,preparedStatement,rs);
         }
+    }
+
+    public Company getCompanyByName(String companyName) {
+        List<Company> companies = listAll();
+
+        for(Company company:companies){
+            if(companyName.toLowerCase().equals(company.getName().toLowerCase())){
+                return company;
+            }
+        }
+        throw new RuntimeException("Wrong comanpyName "+companyName);
     }
 }

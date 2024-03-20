@@ -1,2 +1,4 @@
-package com.seatrade.util;public enum ShipState {
+package com.seatrade.util;
+
+public enum ShipState {
 }

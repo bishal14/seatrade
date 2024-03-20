@@ -1,7 +1,9 @@
 package com.seatrade.dao;
 
 import com.seatrade.dao.GenericDAO;
+import com.seatrade.entity.Cargo;
 import com.seatrade.entity.Harbour;
+import com.seatrade.entity.Ship;
 import com.seatrade.util.database.DatabaseUtility;
 
 import java.sql.Connection;
@@ -147,7 +149,14 @@ public class HarbourDaoImplementation implements GenericDAO<Harbour> {
      }
 
 
+    public Harbour getHarbourByName(String harbourName) {
+        List<Harbour> harbours = listAll();
 
-
-
+        for(Harbour harbour :harbours){
+            if(harbour.getName().toLowerCase().equals(harbourName.toLowerCase())){
+                return harbour;
+            }
+        }
+        throw  new RuntimeException("Invalid harbour name "+harbourName);
+    }
 }

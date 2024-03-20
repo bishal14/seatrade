@@ -1,5 +1,6 @@
 package com.seatrade.entity;
 
+import com.seatrade.ShipState;
 import com.seatrade.util.position.Position;
 import com.seatrade.util.position.RadarScreen;
 
@@ -12,10 +13,15 @@ public class Ship {
 	private int yPosition;
 	private  String direction;
 	private  double cost;
+	private Cargo cargo;
+	private  Harbour harbour;
 
 	private String name;
 	private int fkCompanyId;
 
+	private ShipState shipState;
+
+	private boolean isCargoLoaded;
 	public Ship(int id, int xPosition, int yPosition, String direction, double cost, String name) {
 		this.shipId = id;
 		this.xPosition = xPosition;
@@ -23,6 +29,8 @@ public class Ship {
 		this.direction = direction;
 		this.cost = cost;
 		this.name = name;
+		this.isCargoLoaded =false;
+
 	}
 
 	public Ship(String name) {
@@ -31,6 +39,24 @@ public class Ship {
 		this.yPosition= 5;
 		this.direction= "NONE";
 		this.cost=(int)(Math.random())*20000;
+		this.shipState=ShipState.WAIT;
+		this.cargo = null;
+	}
+
+	public Harbour getHarbour() {
+		return harbour;
+	}
+
+	public void setHarbour(Harbour harbour) {
+		this.harbour = harbour;
+	}
+
+	public Cargo getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
 	}
 
 	public int getxPosition() {
@@ -84,6 +110,14 @@ public class Ship {
 
  	}
 
+	public boolean isCargoLoaded() {
+		return isCargoLoaded;
+	}
+
+	public void setCargoLoaded(boolean cargoLoaded) {
+		isCargoLoaded = cargoLoaded;
+	}
+
 	public int getShipId() {
 		return shipId;
 	}
@@ -99,17 +133,10 @@ public class Ship {
 		return radar;
 	}
 
-	public List<Cargo> getCargos() {
-		return cargos;
-	}
 
 	RadarScreen radar;
-	List<Cargo> cargos;
-	
-	public void recieveCargo(Cargo cargo){
-		cargos.add(cargo);
-	}
-	
+
+
 	public void moveTo(Harbour harbour) {
 		
 	}
@@ -129,14 +156,29 @@ public class Ship {
 		
 	}
 	
-	public boolean unloadCargo(Cargo cargo) {
-		for (Cargo carg : cargos) {
-			if(carg.equals(cargo)) {
-				cargos.remove(cargo);
-				return true;
-			}
+	public void unloadCargo() {
+		this.setCargo(null);
+
+	}
+
+	public void loadCargo(Cargo cargo){
+		if(this.getCargo()==null){
+			this.setCargo(cargo);
+
 		}
-		return false;
-}
-	//hibernate
+	}
+
+
+	public void setState(ShipState shipState) {
+		this.shipState = shipState;
+	}
+
+	public ShipState getShipState() {
+		return shipState;
+	}
+
+	public boolean checkFromToHarbour(Harbour fromHarbour, Harbour toHarbour){
+
+		return fromHarbour.getxPosition()==toHarbour.getxPosition() && fromHarbour.getyPosition()==toHarbour.getyPosition();
+	}
 }

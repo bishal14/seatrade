@@ -23,8 +23,8 @@ public class Company {
     public Company(String name) {
         this.name = name;
         this.companyBalance= 20000;
-        this.width=5;
-        this.height=5;
+        this.width=10;
+        this.height=10;
     }
 
     public Company(int companyId) {
@@ -45,6 +45,10 @@ public class Company {
 
     public int getCompanyId() {
         return companyId;
+    }
+
+    public void setCompanyBalance(double companyBalance) {
+        this.companyBalance = companyBalance;
     }
 
     public double getCompanyBalance() {

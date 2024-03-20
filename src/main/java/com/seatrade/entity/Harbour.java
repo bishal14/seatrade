@@ -15,7 +15,7 @@ public class Harbour {
 	private String name;
 
 	List<Cargo> cargos;
-	List<Ship> shipsInHarbour;
+	private Ship shipInHarbour;
 
 
 	public Harbour(int xPosition, int yPosition, String direction, String name) {
@@ -34,7 +34,7 @@ public class Harbour {
 	}
 
 	public void showHarbourDetails() {
-		
+
 	}
 
 	public String checkHarbourState() {
@@ -81,11 +81,25 @@ public class Harbour {
 		this.direction = direction;
 	}
 
+	public void setCargos(List<Cargo> cargos) {
+		this.cargos = cargos;
+	}
+
+	public Ship getShipInHarbour() {
+		return shipInHarbour;
+	}
+
+	public void setShipInHarbour(Ship shipInHarbour) {
+		this.shipInHarbour = shipInHarbour;
+	}
+
 	public List<Cargo> getCargos() {
 		return cargos;
 	}
 
-	public List<Ship> getShipsInHarbour() {
-		return shipsInHarbour;
-	}
+
+
+    public boolean isFree() {
+		return this.getShipInHarbour()==null;
+     }
 }

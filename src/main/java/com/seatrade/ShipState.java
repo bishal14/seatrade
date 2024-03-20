@@ -1,2 +1,5 @@
-package com.seatrade;public enum ShipState {
+package com.seatrade;
+
+public enum ShipState {
+    MOVING, WAIT, IN_ACCIDENT, LOST;
 }

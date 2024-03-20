@@ -73,6 +73,7 @@ public class ShipAppGUI extends JFrame {
         JLabel shipList = new JLabel("Client Ship Names");
         JLabel harbourList = new JLabel("Harbour Names");
         JLabel cargoList = new JLabel("Cargos");
+        JLabel moveToHarbour = new JLabel("move To Harbour: ");
         CompanyDaoImplementation companyDaoImplementation = new CompanyDaoImplementation();
         ShipDaoImplementation shipDaoImplementation = new ShipDaoImplementation();
         HarbourDaoImplementation harbourDaoImplementation = new HarbourDaoImplementation();
@@ -82,6 +83,7 @@ public class ShipAppGUI extends JFrame {
         JComboBox<String> shipComboBox = new JComboBox<>();
         JComboBox<String> harbourCombobox = new JComboBox<>();
         JComboBox<Integer> cargoComboBox = new JComboBox<>();
+        JComboBox<String> moveToHarbourComboBox = new JComboBox<>();
 
 
         List<Company> companies = companyDaoImplementation.listAll();
@@ -113,6 +115,7 @@ public class ShipAppGUI extends JFrame {
         for (Harbour harbour : harbours) {
             harbourCombobox.addItem(harbour.getName());
             harbourNameToIdMap.put(harbour.getName(),harbour.getId());
+            moveToHarbourComboBox.addItem(harbour.getName());
         }
 
         List<Cargo> cargos = cargoDaoImplementation.listAll();
@@ -181,6 +184,9 @@ public class ShipAppGUI extends JFrame {
         panel.add(cargoList);
         panel.add(cargoComboBox);
 
+        panel.add(moveToHarbour);
+        panel.add(moveToHarbourComboBox);
+
         // Add components to frame
         frame.getContentPane().add(panel, BorderLayout.WEST);
         frame.getContentPane().add(topPanel, BorderLayout.NORTH);
@@ -211,10 +217,15 @@ public class ShipAppGUI extends JFrame {
                     int yHarbourPosition = harbourSelected.getyPosition();
                     String shipName = shipNameTextfield.getText().toString();
                     System.out.println("shipname in textfield is "+shipName);
+                    if(shipName.length()!=0){
+
+
 
                     Ship shipToAdd= new Ship(xHarbourPosition,yHarbourPosition,direction,cost, shipName,companyId);
 
-                    shipDaoImplementation.add(shipToAdd);
+                    shipDaoImplementation.add(shipToAdd);}else{
+                        JOptionPane.showMessageDialog(null,"shipName is empty, which is not allowed");
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace(); // Oder zeige eine Fehlermeldung an
                 }
@@ -241,13 +252,16 @@ public class ShipAppGUI extends JFrame {
                double balance = company.getCompanyBalance();
 //
                 boolean condition = isShipHarbourArrived(ship,harbour);
-                if( harbour.isFree()&&condition==true ){
+                boolean count = true;
+                if( harbour.isFree()&&condition==true && count){
 
                     ship.unloadCargo();
 
                         balance += ship.getCargo().getValue();
+                        double balanceCompany= balance +company.getCompanyBalance();
 
-                        company.setCompanyBalance(balance);
+                        company.setCompanyBalance(balanceCompany);
+                        count = false;
                     /**
                      *  if harbour is not full, then unload, otherwise wait.
                       */
@@ -265,24 +279,28 @@ public class ShipAppGUI extends JFrame {
             String shipName= giveCurrentNameOfComboBox(shipComboBox);
             Ship ship = shipDaoImplementation.getShipByName(shipName);
 
-            String harbourName = giveCurrentNameOfComboBox(harbourCombobox);
+            String harbourName = giveCurrentNameOfComboBox(moveToHarbourComboBox);
             Harbour destinationHarbour = harbourDaoImplementation.getHarbourByName(harbourName);
 
             String companyName = giveCurrentNameOfComboBox(companyComboBox);
             Company company =companyDaoImplementation.getCompanyByName(companyName);
 
             boolean shipWaitState= isShipHarbourArrived(ship, destinationHarbour);
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 //If ship is parket at harbour, then it can move. it can move to other harbour only.
+                System.out.println("ship name is "+ship.getName()+", x position "+ship.getxPosition()+", y position "+ship.getyPosition());
 
-                if(shipWaitState && ship.checkFromToHarbour(ship.getHarbour(), destinationHarbour) ){
+                System.out.println("ship name is "+ship.findHarbour(ship.getxPosition(),ship.getyPosition()).getName());
+
+                if(shipWaitState && !ship.isSameHarbour(ship.getHarbour(), destinationHarbour) ){
                     ship.setState(ShipState.MOVING);
+
                 }
 
+                JOptionPane.showMessageDialog(null, "Destination Harbour is same as current!");
 
-
-                // if position of harbour and ship is same,
              }
 
         });

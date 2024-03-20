@@ -3,6 +3,7 @@ package com.seatrade.dao;
 import com.seatrade.entity.Ship;
 import com.seatrade.util.database.DatabaseUtility;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -273,7 +274,7 @@ public class ShipDaoImplementation implements GenericDAO<Ship> {
                 return  ship;
             }
         }
-      throw  new RuntimeException("No Ship with name "+ name+ "is registered!");
+       throw  new RuntimeException("No Ship with name "+ name+ "is registered!");
      }
 }
 

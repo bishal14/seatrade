@@ -4,8 +4,6 @@ import com.seatrade.ShipState;
 import com.seatrade.util.position.Position;
 import com.seatrade.util.position.RadarScreen;
 
-import java.util.List;
-
 public class Ship {
 
 	private int shipId;
@@ -177,8 +175,64 @@ public class Ship {
 		return shipState;
 	}
 
-	public boolean checkFromToHarbour(Harbour fromHarbour, Harbour toHarbour){
+	public boolean isSameHarbour(Harbour fromHarbour, Harbour toHarbour){
 
 		return fromHarbour.getxPosition()==toHarbour.getxPosition() && fromHarbour.getyPosition()==toHarbour.getyPosition();
+	}
+
+	public Harbour findHarbour(int xPosition,int yPosition){
+		Harbour harbour = null;
+
+		if(xPosition==25 && yPosition ==9){
+			harbour =new Harbour(xPosition,yPosition,"NONE","lisabon");
+			this.setHarbour(harbour);
+ 	        return harbour;
+ 			}else if(xPosition==24&& yPosition==16){
+			harbour =new Harbour(xPosition,yPosition,"NONE","dakar");
+			this.setHarbour(harbour);
+
+			return harbour;
+		} else if(xPosition==29 && yPosition==13){
+			harbour =new Harbour(xPosition,yPosition,"NONE","algier");
+			this.setHarbour(harbour);
+
+			return harbour;
+		}else if(xPosition== 29&& yPosition==18){
+			harbour =new Harbour(xPosition,yPosition,"NONE","cotonau");
+			this.setHarbour(harbour);
+
+			return harbour;
+		}else if(xPosition== 2&& yPosition==3){
+			harbour =new Harbour(xPosition,yPosition,"NONE","halifax");
+			this.setHarbour(harbour);
+
+			return harbour;
+		}else if(xPosition==29 && yPosition==0){
+			harbour =new Harbour(xPosition,yPosition,"NONE","plymouth");
+			this.setHarbour(harbour);
+
+			return harbour;
+		}else if(xPosition==28 && yPosition==5){
+			harbour =new Harbour(xPosition,yPosition,"NONE","brest");
+			this.setHarbour(harbour);
+
+			return harbour;
+		}else if(xPosition==0 && yPosition==10){
+			harbour =new Harbour(xPosition,yPosition,"NONE","ney york");
+			this.setHarbour(harbour);
+
+			return harbour;
+		}else if(xPosition==2 && yPosition==18){
+			harbour =new Harbour(xPosition,yPosition,"NONE","carracas");
+			this.setHarbour(harbour);
+
+			return harbour;
+		}else if(xPosition== 17&& yPosition==0){
+			harbour =new Harbour(xPosition,yPosition,"NONE","reykjavik");
+			this.setHarbour(harbour);
+
+			return harbour;
+		}
+		throw new RuntimeException("Ship is on the way!");
 	}
 }
